@@ -47,6 +47,7 @@ export function demoState(): AppState {
     name: "Arjun Sharma",
     monthlyIncome: 50000,
     sipTarget: 7000,
+    allocation: { Essentials: 44, Savings: 20, Investments: 14, Lifestyle: 22 },
   };
   const raw: [
     string,
@@ -114,13 +115,11 @@ export function demoState(): AppState {
     },
   );
   s.transactions.push(
-    ...s.transactions
-      .slice()
-      .map((t) => ({
-        ...t,
-        id: `prev-${t.id}`,
-        date: shiftMonths(t.date, -1),
-      })),
+    ...s.transactions.slice().map((t) => ({
+      ...t,
+      id: `prev-${t.id}`,
+      date: shiftMonths(t.date, -1),
+    })),
   );
   s.accounts = [
     {

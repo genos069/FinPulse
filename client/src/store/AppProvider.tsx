@@ -7,7 +7,7 @@ import React, {
   useState,
 } from "react";
 import { AppState as NativeAppState } from "react-native";
-import { emptyState } from "../data/seed";
+import { emptyState, demoState } from "../data/seed";
 import { loadState, saveState } from "../services/storage";
 import { reducer, type Action } from "./reducer";
 import type { AppState } from "../types/models";
@@ -23,15 +23,27 @@ type Store = {
   today: string;
 };
 const Context = createContext<Store | null>(null);
-export function AppProvider({ children }: { children: React.ReactNode }) {
-  const [state, dispatch] = useReducer(reducer, undefined, emptyState);
+export function AppProvider({
+  children,
+  scope,
+  demo = false,
+}: {
+  children: React.ReactNode;
+  scope?: string;
+  demo?: boolean;
+}) {
+  const [state, dispatch] = useReducer(
+    reducer,
+    undefined,
+    demo ? demoState : emptyState,
+  );
   const [ready, setReady] = useState(false),
     [error, setError] = useState<string | null>(null),
     [blocked, setBlocked] = useState(false),
     [today, setToday] = useState(isoDate());
   useEffect(() => {
     let active = true;
-    loadState()
+    loadState(scope)
       .then((s) => {
         if (active && s) dispatch({ type: "REPLACE", state: s });
       })
@@ -47,11 +59,11 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     return () => {
       active = false;
     };
-  }, []);
+  }, [scope]);
   useEffect(() => {
     if (!ready || blocked) return;
     let active = true;
-    saveState(state)
+    saveState(state, scope)
       .then(() => {
         if (active) setError(null);
       })
@@ -64,7 +76,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     return () => {
       active = false;
     };
-  }, [state, ready, blocked]);
+  }, [state, ready, blocked, scope]);
   useEffect(() => {
     const sub = NativeAppState.addEventListener("change", (s) => {
       if (s === "active") setToday(isoDate());
@@ -74,23 +86,26 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       sub.remove();
       clearInterval(timer);
     };
-  }, []);
-  const recover = useCallback(async (s: AppState) => {
-    await saveState(s);
-    dispatch({ type: "REPLACE", state: s });
-    setBlocked(false);
-    setError(null);
-  }, []);
+  }, [scope]);
+  const recover = useCallback(
+    async (s: AppState) => {
+      await saveState(s, scope);
+      dispatch({ type: "REPLACE", state: s });
+      setBlocked(false);
+      setError(null);
+    },
+    [scope],
+  );
   const retry = useCallback(async () => {
     try {
-      await saveState(state);
+      await saveState(state, scope);
       setError(null);
     } catch {
       setError(
         "Storage is still unavailable. Export a backup before closing the app.",
       );
     }
-  }, [state]);
+  }, [state, scope]);
   return (
     <Context.Provider
       value={{ state, dispatch, ready, error, blocked, recover, retry, today }}

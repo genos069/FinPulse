@@ -80,3 +80,19 @@ test("unclosed quotes and empty input produce explicit errors", () => {
   );
   assert.ok(parseStatement("", "cash").errors.length);
 });
+
+test("the three pasted screenshot alerts retain their amounts, merchants and methods", () => {
+  const result = parseStatement(
+    "Rs.420.00 debited from A/c XX1234 to SWIGGY on UPI Ref 512348812\nINR 1,899.00 spent on ICICI Bank Credit Card at AMAZON\nRs 780 paid to ZEPTO via UPI",
+    "bank",
+  );
+  assert.equal(result.errors.length, 0);
+  assert.deepEqual(
+    result.rows.map((r) => [r.amount, r.merchant, r.method]),
+    [
+      [420, "SWIGGY", "UPI"],
+      [1899, "AMAZON", "Credit Card"],
+      [780, "ZEPTO", "UPI"],
+    ],
+  );
+});

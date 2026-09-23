@@ -21,11 +21,7 @@ export function GoalsScreen() {
     nav = useNav(),
     m = selectMetrics(state);
   return (
-    <Screen
-      tab
-      title="Goals"
-      subtitle="Turn your plans into measurable progress."
-    >
+    <Screen title="Goals" subtitle="Turn your plans into measurable progress.">
       <LinearGradient
         colors={["#064e3b", "#087f59"]}
         style={{ borderRadius: 22, padding: 22, marginBottom: 16 }}
@@ -46,7 +42,7 @@ export function GoalsScreen() {
       </LinearGradient>
       <Button
         title="＋ Create financial goal"
-        onPress={() => nav.navigate("Entity", { kind: "goals" })}
+        onPress={() => nav.navigate("GoalCreate")}
       />
       <Section title="Your goals" />
       {state.goals.map((g) => (

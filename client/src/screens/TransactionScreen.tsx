@@ -103,13 +103,21 @@ export function TransactionScreen({
   return (
     <Screen>
       <T size={25} bold style={{ marginBottom: 20 }}>
-        {existing ? "Edit transaction" : "Add transaction"}
+        {existing
+          ? "Edit transaction"
+          : type === "transfer"
+            ? "Add transfer"
+            : draft
+              ? "Review transaction"
+              : "Add transaction"}
       </T>
-      <Chips
-        options={["expense", "income", "investment", "transfer"] as const}
-        value={type}
-        onChange={setType}
-      />
+      {!route.params?.type || existing ? (
+        <Chips
+          options={["expense", "income", "investment", "transfer"] as const}
+          value={type}
+          onChange={setType}
+        />
+      ) : null}
       <Card>
         <Field
           label="Amount (₹)"
@@ -119,7 +127,13 @@ export function TransactionScreen({
           placeholder="0.00"
         />
         <Field
-          label={type === "income" ? "Income source" : "Merchant / description"}
+          label={
+            type === "income"
+              ? "Income source"
+              : type === "transfer"
+                ? "Transfer description"
+                : "Merchant / description"
+          }
           value={merchant}
           onChangeText={setMerchant}
           placeholder={
@@ -193,7 +207,10 @@ export function TransactionScreen({
           separately in Investments to track its current value.
         </Note>
       ) : null}
-      <Button title="Save transaction" onPress={save} />
+      <Button
+        title={type === "transfer" ? "Save transfer" : "Save transaction"}
+        onPress={save}
+      />
       {existing ? (
         <View style={{ marginTop: 12 }}>
           {confirmDelete ? (

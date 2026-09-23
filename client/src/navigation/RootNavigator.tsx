@@ -8,10 +8,17 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import {
   House,
   Wallet,
-  Target,
+  Mic,
   ChartNoAxesCombined,
   UserRound,
 } from "lucide-react-native";
+import { View } from "react-native";
+import { useNav } from "../hooks/useNav";
+import { ExpenseScreen } from "../screens/ExpenseScreen";
+import { IncomeScreen } from "../screens/IncomeScreen";
+import { GoalCreateScreen } from "../screens/GoalCreateScreen";
+import { InvestmentSuggestionsScreen } from "../screens/InvestmentSuggestionsScreen";
+import { VoiceScreen } from "../screens/VoiceScreen";
 import { useTheme } from "../theme/ThemeProvider";
 import type { RootStackParams, TabParams } from "./types";
 import { HomeScreen } from "../screens/HomeScreen";
@@ -32,12 +39,16 @@ const Stack = createNativeStackNavigator<RootStackParams>(),
 const icons = {
   Home: House,
   Money: Wallet,
-  Goals: Target,
+  Voice: Mic,
   Investments: ChartNoAxesCombined,
   Me: UserRound,
 };
+function VoicePlaceholder() {
+  return <View />;
+}
 function Tabs() {
-  const c = useTheme();
+  const c = useTheme(),
+    nav = useNav();
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -50,16 +61,51 @@ function Tabs() {
           minHeight: 66,
           paddingTop: 9,
         },
-        tabBarLabelStyle: { fontSize: 10, fontWeight: "600" },
+        tabBarLabelStyle: {
+          fontSize: 10,
+          fontWeight: "600",
+          marginHorizontal: 0,
+        },
         tabBarIcon: ({ color, size }) => {
           const Icon = icons[route.name];
-          return <Icon color={color} size={size - 2} />;
+          return route.name === "Voice" ? (
+            <View
+              style={{
+                width: 54,
+                height: 54,
+                borderRadius: 27,
+                backgroundColor: "#0f766e",
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: -22,
+                borderWidth: 4,
+                borderColor: c.nav,
+              }}
+            >
+              <Mic color="white" size={25} />
+            </View>
+          ) : (
+            <Icon color={color} size={size - 2} />
+          );
         },
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Money" component={MoneyScreen} />
-      <Tab.Screen name="Goals" component={GoalsScreen} />
+      <Tab.Screen
+        name="Voice"
+        component={VoicePlaceholder}
+        options={{
+          tabBarLabel: "Voice",
+          tabBarAccessibilityLabel: "Add expense by voice",
+        }}
+        listeners={{
+          tabPress: (e) => {
+            e.preventDefault();
+            nav.navigate("Voice");
+          },
+        }}
+      />
       <Tab.Screen name="Investments" component={InvestmentsScreen} />
       <Tab.Screen name="Me" component={MeScreen} />
     </Tab.Navigator>
@@ -96,6 +142,36 @@ export function RootNavigator() {
           name="Tabs"
           component={Tabs}
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Expense"
+          component={ExpenseScreen}
+          options={{ headerShown: false, presentation: "modal" }}
+        />
+        <Stack.Screen
+          name="Income"
+          component={IncomeScreen}
+          options={{ headerShown: false, presentation: "modal" }}
+        />
+        <Stack.Screen
+          name="GoalCreate"
+          component={GoalCreateScreen}
+          options={{ headerShown: false, presentation: "modal" }}
+        />
+        <Stack.Screen
+          name="Goals"
+          component={GoalsScreen}
+          options={{ title: "Your goals" }}
+        />
+        <Stack.Screen
+          name="Voice"
+          component={VoiceScreen}
+          options={{ title: "Voice entry" }}
+        />
+        <Stack.Screen
+          name="InvestmentSuggestions"
+          component={InvestmentSuggestionsScreen}
+          options={{ title: "Investment suggestions" }}
         />
         <Stack.Screen
           name="Transaction"

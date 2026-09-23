@@ -43,7 +43,9 @@ export function detectMethod(text: string): Transaction["method"] {
       ? "Credit Card"
       : /debit\s*card/i.test(text)
         ? "Debit Card"
-        : /neft|imps|rtgs|bank transfer/i.test(text)
+        : /neft|imps|rtgs|bank transfer|\b(?:hdfc|icici|sbi|axis|kotak)(?:\s+bank)?\b|\bbank\s+(?:payment|debit|credit)\b/i.test(
+              text,
+            )
           ? "Bank Transfer"
           : "Cash";
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { View } from "react-native";
 import {
   Screen,
   T,
@@ -8,133 +9,197 @@ import {
   ErrorText,
   Note,
   Row,
+  Progress,
+  Section,
 } from "../../components/ui";
 import { useApp } from "../../store/AppProvider";
-import { inr, numberInput } from "../../utils/format";
-import type { Profile, Category } from "../../types/models";
+import { useTheme } from "../../theme/ThemeProvider";
+import { inr, numberInput, percent } from "../../utils/format";
+import { dateLabel, monthKey } from "../../utils/date";
+import {
+  latestSalary,
+  salarySplit,
+  applySalarySplit,
+} from "../../utils/planning";
+import { profileSchema, stateSchema } from "../../types/models";
+import { useNav } from "../../hooks/useNav";
+
 export function AllocationTool() {
-  const { state, dispatch } = useApp();
+  const { state, dispatch, today } = useApp(),
+    c = useTheme(),
+    nav = useNav();
+  const salary = latestSalary(state.transactions, today);
   const [values, setValues] = useState(() =>
-      Object.fromEntries(
-        Object.entries(state.profile.allocation).map(([k, v]) => [
-          k,
-          String(v),
-        ]),
-      ),
+    Object.fromEntries(
+      Object.entries(state.profile.allocation).map(([k, v]) => [k, String(v)]),
     ),
-    [error, setError] = useState<string | null>(null),
+  );
+  const [editing, setEditing] = useState(false),
+    [confirm, setConfirm] = useState(false),
     [saved, setSaved] = useState(false),
-    [confirm, setConfirm] = useState(false);
-  const total = Object.values(values).reduce((s, v) => s + numberInput(v), 0);
-  function save(apply = false) {
-    if (!Number.isFinite(total) || Math.abs(total - 100) > 0.001) {
-      setError("Your allocation must add up to 100%.");
-      return;
-    }
-    const allocation = Object.fromEntries(
+    [error, setError] = useState<string | null>(null);
+  const parsed = profileSchema.shape.allocation.safeParse(
+    Object.fromEntries(
       Object.entries(values).map(([k, v]) => [k, numberInput(v)]),
-    ) as Profile["allocation"];
-    dispatch({
-      type: "PROFILE",
-      profile: {
-        ...state.profile,
-        allocation,
-        sipTarget: Math.round(
-          (state.profile.monthlyIncome * allocation.Investments) / 100,
-        ),
-      },
-    });
-    if (apply) {
-      const essential =
-          (state.profile.monthlyIncome * allocation.Essentials) / 100,
-        lifestyle = (state.profile.monthlyIncome * allocation.Lifestyle) / 100;
-      const targets: [Category, number][] = [
-        ["Household", essential * 0.6],
-        ["Groceries", essential * 0.15],
-        ["Transport", essential * 0.1],
-        ["Bills", essential * 0.1],
-        ["Medical", essential * 0.05],
-        ["Food", lifestyle * 0.4],
-        ["Shopping", lifestyle * 0.25],
-        ["Entertainment", lifestyle * 0.25],
-        ["Personal", lifestyle * 0.1],
-      ];
-      for (const [category, limit] of targets) {
-        const existing = state.budgets.find((b) => b.category === category);
-        if (limit > 0)
-          dispatch({
-            type: "UPSERT",
-            key: "budgets",
-            value: {
-              id: existing?.id ?? category,
-              category,
-              limit: Math.round(limit * 100) / 100,
-            },
-          });
-        else if (existing)
-          dispatch({ type: "REMOVE", key: "budgets", id: existing.id });
-      }
-    }
-    setError(null);
+    ),
+  );
+  const allocation = parsed.success ? parsed.data : state.profile.allocation;
+  const amount = salary?.amount ?? state.profile.monthlyIncome;
+  const split = salarySplit(amount, allocation);
+  function apply() {
+    if (!parsed.success || amount <= 0)
+      return setError(
+        "Enter percentages from 0 to 100 that add up to 100%, and record a salary first.",
+      );
+    const next = stateSchema.safeParse(
+      applySalarySplit(state, amount, parsed.data),
+    );
+    if (!next.success)
+      return setError(
+        "This allocation could not be saved. Check the amounts and try again.",
+      );
+    dispatch({ type: "REPLACE", state: next.data });
     setSaved(true);
     setConfirm(false);
+    setEditing(false);
+    setError(null);
   }
   return (
-    <Screen>
-      <T size={25} bold>
-        Salary allocation
-      </T>
-      <T muted size={12} style={{ marginVertical: 14 }}>
-        Based on expected monthly income of {inr(state.profile.monthlyIncome)}.
-      </T>
+    <Screen title="Salary-day auto rebalancer">
       <Card>
-        {Object.entries(values).map(([key, value]) => (
-          <Field
-            key={key}
-            label={`${key} (%)`}
-            value={value}
-            onChangeText={(v) => {
-              setValues((s) => ({ ...s, [key]: v }));
-              setSaved(false);
-            }}
-            keyboardType="decimal-pad"
-          />
-        ))}
-        <Row style={{ justifyContent: "space-between" }}>
-          <T>Total</T>
-          <T bold>{Number.isFinite(total) ? total : "—"}%</T>
-        </Row>
-      </Card>
-      <ErrorText message={error} />
-      <Button
-        title={saved ? "Allocation saved" : "Save allocation"}
-        onPress={() => save()}
-      />
-      <Button
-        title="Apply to category budgets"
-        variant="secondary"
-        style={{ marginTop: 12 }}
-        onPress={() => setConfirm(true)}
-      />
-      {confirm ? (
-        <Card style={{ marginTop: 12 }}>
-          <T size={12} style={{ marginBottom: 14 }}>
-            Replace Household, Groceries, Transport, Bills, Medical, Food,
-            Shopping, Entertainment and Personal budgets using this allocation?
-            Other budgets stay as they are.
+        <T muted>
+          {salary ? "Detected salary credit" : "Expected monthly salary"}
+        </T>
+        <T size={32} bold style={{ marginVertical: 4 }}>
+          {inr(amount)}
+        </T>
+        <View
+          style={{
+            alignSelf: "flex-start",
+            backgroundColor: c.greenBg,
+            borderRadius: 14,
+            paddingHorizontal: 10,
+            paddingVertical: 5,
+            marginBottom: 24,
+          }}
+        >
+          <T size={11} style={{ color: c.green }}>
+            {salary
+              ? `Salary detected · ${dateLabel(salary.date)}`
+              : "Preview · no salary credit recorded"}
           </T>
-          <Button title="Confirm budget update" onPress={() => save(true)} />
-          <Button
-            title="Cancel"
-            variant="secondary"
-            style={{ marginTop: 8 }}
-            onPress={() => setConfirm(false)}
-          />
+        </View>
+        {salary && !salary.date.startsWith(monthKey()) ? (
+          <Note>
+            The latest recorded salary is from an earlier month. Record this
+            month’s salary if the amount has changed.
+          </Note>
+        ) : null}
+        {Object.entries(allocation).map(([key, value]) => (
+          <View key={key} style={{ marginBottom: 20 }}>
+            <Row style={{ justifyContent: "space-between", marginBottom: 8 }}>
+              <T>{key}</T>
+              <T bold>{value}%</T>
+            </Row>
+            <Progress value={value} />
+            <T muted size={11} style={{ marginTop: 5 }}>
+              {inr((amount * value) / 100)} of your salary
+            </T>
+          </View>
+        ))}
+        <Button
+          title={editing ? "Hide allocation controls" : "Customize percentages"}
+          variant="secondary"
+          onPress={() => {
+            setEditing((v) => !v);
+            setConfirm(false);
+          }}
+        />
+        {editing ? (
+          <View style={{ marginTop: 20 }}>
+            {Object.entries(values).map(([key, value]) => (
+              <Field
+                key={key}
+                label={`${key} (%)`}
+                value={value}
+                keyboardType="decimal-pad"
+                onChangeText={(v) => {
+                  setValues((s) => ({ ...s, [key]: v }));
+                  setSaved(false);
+                  setConfirm(false);
+                }}
+              />
+            ))}
+            <T muted>
+              Total:{" "}
+              {Object.values(values).reduce(
+                (s, v) =>
+                  s + (Number.isFinite(numberInput(v)) ? numberInput(v) : 0),
+                0,
+              )}
+              %
+            </T>
+          </View>
+        ) : null}
+        <Section title="Suggested split for this salary" />
+        <Card>
+          {split.map((row) => (
+            <View key={row.label} style={{ marginBottom: 18 }}>
+              <Row style={{ justifyContent: "space-between", marginBottom: 8 }}>
+                <T>
+                  {row.icon} {row.label}
+                </T>
+                <T bold>{inr(row.amount)}</T>
+              </Row>
+              <Progress value={percent(row.amount, amount)} />
+            </View>
+          ))}
         </Card>
-      ) : null}
+        <ErrorText
+          message={
+            error ??
+            (!parsed.success
+              ? "Your percentages must be between 0 and 100 and total 100%."
+              : null)
+          }
+        />
+        <Button
+          title={
+            saved
+              ? "Split applied to your budgets"
+              : "Apply this split to my budgets"
+          }
+          disabled={!parsed.success || amount <= 0 || saved}
+          onPress={() => setConfirm(true)}
+        />
+        {confirm ? (
+          <Card style={{ marginTop: 14 }}>
+            <T size={13} style={{ marginBottom: 14 }}>
+              Update Household (rent), Bills, Food and Entertainment (fun)
+              budgets, plus your savings and investment targets? Your other
+              category budgets remain separate.
+            </T>
+            <Button title="Confirm budget update" onPress={apply} />
+            <Button
+              title="Cancel"
+              variant="secondary"
+              onPress={() => setConfirm(false)}
+              style={{ marginTop: 10 }}
+            />
+          </Card>
+        ) : null}
+        {!salary ? (
+          <Button
+            title="Record salary income"
+            variant="secondary"
+            style={{ marginTop: 12 }}
+            onPress={() => nav.navigate("Income")}
+          />
+        ) : null}
+      </Card>
       <Note>
-        This sets a planning allocation and monthly investment target. It does
-        not transfer your salary or run an automatic bank mandate.
+        These are budget targets. Applying a split does not move money, add
+        expenses or change your recorded balances.
       </Note>
     </Screen>
   );

@@ -1,6 +1,16 @@
+import { useState } from "react";
+import { useAuth } from "../store/AuthProvider";
 import { Pressable, View, Switch } from "react-native";
 import { ChevronRight } from "lucide-react-native";
-import { Screen, T, Row, Card, Section, Button } from "../components/ui";
+import {
+  Screen,
+  T,
+  Row,
+  Card,
+  Section,
+  Button,
+  ErrorText,
+} from "../components/ui";
 import { useApp } from "../store/AppProvider";
 import { useNav } from "../hooks/useNav";
 import { useTheme } from "../theme/ThemeProvider";
@@ -55,6 +65,8 @@ const tools: {
   },
 ];
 export function MeScreen() {
+  const auth = useAuth();
+  const [signOutError, setSignOutError] = useState<string | null>(null);
   const { state, dispatch } = useApp(),
     nav = useNav(),
     c = useTheme();
@@ -89,6 +101,33 @@ export function MeScreen() {
           </T>
         </Row>
       </Card>
+      <Card
+        onPress={() => nav.navigate("InvestmentSuggestions")}
+        label="Investment suggestions"
+      >
+        <Row>
+          <T size={24}>🌱</T>
+          <View style={{ flex: 1 }}>
+            <T bold>Investment suggestions</T>
+            <T muted size={12}>
+              Explore options for your goals and time horizon
+            </T>
+          </View>
+          <ChevronRight size={18} color={c.green} />
+        </Row>
+      </Card>
+      <Card onPress={() => nav.navigate("Goals")} label="Your goals">
+        <Row>
+          <T size={24}>🎯</T>
+          <View style={{ flex: 1 }}>
+            <T bold>Your goals</T>
+            <T muted size={12}>
+              {state.goals.length} savings and investment plans
+            </T>
+          </View>
+          <ChevronRight size={18} color={c.green} />
+        </Row>
+      </Card>
       <Section title="Money tools" />
       <Card>
         {tools.map((t) => (
@@ -117,13 +156,13 @@ export function MeScreen() {
       </Card>
       <Section title="Salary-day planning" />
       <Card>
-        <T bold>Give your salary a purpose</T>
+        <T bold>Salary-day auto rebalancer</T>
         <T size={12} muted style={{ marginVertical: 10 }}>
           Customize how much goes toward essentials, savings, investments and
           lifestyle.
         </T>
         <Button
-          title="Customize allocation"
+          title="Review salary split"
           variant="secondary"
           onPress={() => nav.navigate("Tools", { tool: "allocation" })}
         />
@@ -166,6 +205,20 @@ export function MeScreen() {
           />
         </Row>
       </Card>
+      <ErrorText message={signOutError} />
+      <Button
+        title={auth.demo ? "Exit demo" : "Log out"}
+        variant="secondary"
+        onPress={() => {
+          void auth
+            .signOut()
+            .catch(() =>
+              setSignOutError(
+                "Could not clear your saved sign-in. Please try again.",
+              ),
+            );
+        }}
+      />
       <T size={11} muted style={{ textAlign: "center", marginVertical: 16 }}>
         FinPulse · Inspired by your Artha prototype{"\n"}Your money, a little
         clearer.

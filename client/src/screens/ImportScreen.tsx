@@ -25,10 +25,28 @@ import {
 import { inr, numberInput } from "../utils/format";
 type Draft = Transaction & { selected: boolean; amountText: string };
 export function ImportScreen() {
+  return (
+    <Screen>
+      <T size={25} bold style={{ marginBottom: 12 }}>
+        Import transactions
+      </T>
+      <ImportForm />
+    </Screen>
+  );
+}
+export function ImportForm({
+  mode = "both",
+  expensesOnly = false,
+}: {
+  mode?: "both" | "upload" | "paste";
+  expensesOnly?: boolean;
+}) {
   const { state, dispatch } = useApp(),
     nav = useNavigation(),
     [text, setText] = useState(""),
-    [account, setAccount] = useState(state.accounts[0].id),
+    [account, setAccount] = useState(
+      state.accounts.find((a) => a.type === "bank")?.id ?? state.accounts[0].id,
+    ),
     [rows, setRows] = useState<Draft[]>([]),
     [errors, setErrors] = useState<string[]>([]),
     [busy, setBusy] = useState(false),
@@ -38,13 +56,39 @@ export function ImportScreen() {
   function parse(input = text) {
     const result = parseStatement(input, account);
     setRows(
-      result.rows.map((r) => ({
-        ...r,
-        amountText: String(r.amount),
-        selected: !existing.has(fingerprint(r)),
-      })),
+      result.rows
+        .filter((r) => !expensesOnly || r.type === "expense")
+        .map((original) => {
+          const r = expensesOnly
+            ? {
+                ...original,
+                accountId:
+                  state.accounts.find(
+                    (a) =>
+                      a.type ===
+                      (original.method === "Cash"
+                        ? "cash"
+                        : original.method === "Credit Card"
+                          ? "credit"
+                          : "bank"),
+                  )?.id ?? account,
+              }
+            : original;
+          return {
+            ...r,
+            amountText: String(r.amount),
+            selected: !existing.has(fingerprint(r)),
+          };
+        }),
     );
-    setErrors(result.errors);
+    setErrors([
+      ...result.errors,
+      ...(expensesOnly && result.rows.some((r) => r.type !== "expense")
+        ? [
+            "Income and investment entries were excluded. Use Add income or the general statement import for those entries.",
+          ]
+        : []),
+    ]);
   }
   async function pick() {
     setBusy(true);
@@ -97,14 +141,11 @@ export function ImportScreen() {
     nav.goBack();
   }
   return (
-    <Screen>
-      <T size={25} bold style={{ marginBottom: 12 }}>
-        Import transactions
-      </T>
+    <>
       <Note>
-        CSV, TSV or bank alert text is read on your device. Review every amount,
-        date, account and category before saving. Exact matching records are
-        skipped.
+        {mode === "upload"
+          ? "Upload a mini statement or passbook export (.csv, .txt or .tsv). Payment methods are read from each transaction; entries with no stated method use Cash. Files are read on this device only."
+          : "Paste one or more transactions — a bank SMS, a UPI alert, or statement lines. Each line is read separately. Review the detected details before saving."}
       </Note>
       <Select
         label="Import into account"
@@ -115,24 +156,36 @@ export function ImportScreen() {
           setRows([]);
         }}
       />
-      <Button
-        title={busy ? "Reading file…" : "Choose CSV / TSV / text file"}
-        disabled={busy}
-        variant="secondary"
-        onPress={() => void pick()}
-      />
-      <Field
-        label="Or paste bank alerts / statement text"
-        multiline
-        style={{ minHeight: 130, marginTop: 8 }}
-        value={text}
-        onChangeText={(v) => {
-          setText(v);
-          setRows([]);
-        }}
-        placeholder="Paid Rs.420 to Swiggy via UPI on 2026-09-19"
-      />
-      <Button title="Review transactions" onPress={() => parse()} />
+      {mode !== "paste" ? (
+        <Button
+          title={busy ? "Reading file…" : "Choose a statement file"}
+          disabled={busy}
+          variant="secondary"
+          onPress={() => void pick()}
+          style={{
+            minHeight: 120,
+            borderWidth: 1,
+            borderStyle: "dashed",
+            marginBottom: 16,
+          }}
+        />
+      ) : null}
+      {mode !== "upload" ? (
+        <>
+          <Field
+            label="Transaction text"
+            multiline
+            style={{ minHeight: 130, marginTop: 8 }}
+            value={text}
+            onChangeText={(v) => {
+              setText(v);
+              setRows([]);
+            }}
+            placeholder="Paid Rs.420 to Swiggy via UPI on 2026-09-19"
+          />
+          <Button title="Read these transactions" onPress={() => parse()} />
+        </>
+      ) : null}
       <ErrorText
         message={errors.length ? errors.slice(0, 12).join("\n") : null}
       />
@@ -191,22 +244,24 @@ export function ImportScreen() {
                     value={r.date}
                     onChangeText={(v) => patch(r.id, { date: v })}
                   />
-                  <Select
-                    label="Type"
-                    value={r.type}
-                    options={["expense", "income", "investment"]}
-                    onChange={(v) =>
-                      patch(r.id, {
-                        type: v as Transaction["type"],
-                        category:
-                          v === "income"
-                            ? "Income"
-                            : v === "investment"
-                              ? "Investment"
-                              : "Other",
-                      })
-                    }
-                  />
+                  {!expensesOnly ? (
+                    <Select
+                      label="Type"
+                      value={r.type}
+                      options={["expense", "income", "investment"]}
+                      onChange={(v) =>
+                        patch(r.id, {
+                          type: v as Transaction["type"],
+                          category:
+                            v === "income"
+                              ? "Income"
+                              : v === "investment"
+                                ? "Investment"
+                                : "Other",
+                        })
+                      }
+                    />
+                  ) : null}
                   {r.type === "expense" ? (
                     <Select
                       label="Category"
@@ -244,6 +299,6 @@ export function ImportScreen() {
           />
         </>
       ) : null}
-    </Screen>
+    </>
   );
 }

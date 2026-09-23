@@ -22,8 +22,9 @@ import {
 import { TransactionRow } from "../components/TransactionRow";
 import { inr, percent } from "../utils/format";
 import { monthKey, monthLabel, dateLabel } from "../utils/date";
-import { categoryIcons } from "../constants/catalog";
-type Panel = "Activity" | "Budgets" | "Accounts" | "Bills" | "Loans";
+import { categoryIcons, chartColors } from "../constants/catalog";
+type Panel =
+  "Analysis" | "Activity" | "Budgets" | "Accounts" | "Bills" | "Loans";
 export function MoneyScreen() {
   const { state } = useApp(),
     c = useTheme(),
@@ -31,6 +32,7 @@ export function MoneyScreen() {
   const [panel, setPanel] = useState<Panel>("Activity"),
     [period, setPeriod] = useState(monthKey()),
     [filter, setFilter] = useState("All"),
+    [categoryFilter, setCategoryFilter] = useState<string | null>(null),
     [query, setQuery] = useState(""),
     [limit, setLimit] = useState(25);
   const m = selectMetrics(state, period),
@@ -54,6 +56,7 @@ export function MoneyScreen() {
           (filter === "Transfer" && t.type === "transfer") ||
           (filter === "UPI" && t.method === "UPI") ||
           (filter === "Card" && t.method.includes("Card"))) &&
+        (!categoryFilter || t.category === categoryFilter) &&
         `${t.merchant} ${t.category} ${t.notes}`
           .toLowerCase()
           .includes(query.toLowerCase()),
@@ -66,14 +69,23 @@ export function MoneyScreen() {
       right={
         <IconButton
           label="Add transaction"
-          onPress={() => nav.navigate("Transaction", { type: "expense" })}
+          onPress={() => nav.navigate("Expense")}
         >
           <Plus size={22} color={c.green} />
         </IconButton>
       }
     >
       <Chips
-        options={["Activity", "Budgets", "Accounts", "Bills", "Loans"] as const}
+        options={
+          [
+            "Activity",
+            "Analysis",
+            "Budgets",
+            "Accounts",
+            "Bills",
+            "Loans",
+          ] as const
+        }
         value={panel}
         onChange={setPanel}
       />
@@ -114,10 +126,19 @@ export function MoneyScreen() {
             value={query}
             onChangeText={(v) => {
               setQuery(v);
+              setCategoryFilter(null);
               setLimit(25);
             }}
             placeholder="Merchant, category or note"
           />
+          {categoryFilter ? (
+            <Button
+              title={`Clear ${categoryFilter} filter`}
+              variant="secondary"
+              style={{ marginBottom: 12 }}
+              onPress={() => setCategoryFilter(null)}
+            />
+          ) : null}
           <Chips
             options={[
               "All",
@@ -133,8 +154,8 @@ export function MoneyScreen() {
           />
           <Row>
             <Button
-              title="Add entry"
-              onPress={() => nav.navigate("Transaction", {})}
+              title="Add expense"
+              onPress={() => nav.navigate("Expense")}
               style={{ flex: 1 }}
             />
             <Button
@@ -175,6 +196,104 @@ export function MoneyScreen() {
               onPress={() => setLimit((n) => n + 25)}
             />
           ) : null}
+        </>
+      ) : null}
+      {panel === "Analysis" ? (
+        <>
+          <Select
+            label="Analysis period"
+            value={period}
+            options={[
+              { label: "All time", value: "all" },
+              ...months.map((k) => ({ label: monthLabel(k), value: k })),
+            ]}
+            onChange={setPeriod}
+          />
+          <Section title="Spending by category" />
+          <Card>
+            <T muted size={12}>
+              Total expenses
+            </T>
+            <T size={30} bold>
+              {inr(m.expenses)}
+            </T>
+            <T muted size={12}>
+              Income, investments and transfers are excluded.
+            </T>
+          </Card>
+          {m.expenses ? (
+            <Card>
+              <View
+                style={{
+                  flexDirection: "row",
+                  height: 16,
+                  borderRadius: 9,
+                  overflow: "hidden",
+                  marginBottom: 20,
+                }}
+              >
+                {Object.entries(m.byCategory)
+                  .sort((a, b) => b[1] - a[1])
+                  .map(([category, value], i) => (
+                    <View
+                      key={category}
+                      style={{
+                        flex: value / m.expenses,
+                        backgroundColor: chartColors[i % chartColors.length],
+                      }}
+                    />
+                  ))}
+              </View>
+              {Object.entries(m.byCategory)
+                .sort((a, b) => b[1] - a[1])
+                .map(([category, value], i) => (
+                  <View key={category} style={{ marginBottom: 20 }}>
+                    <Row
+                      style={{
+                        justifyContent: "space-between",
+                        marginBottom: 8,
+                      }}
+                    >
+                      <T bold style={{ flex: 1 }}>
+                        {categoryIcons[category]} {category}
+                      </T>
+                      <T bold>{inr(value)}</T>
+                    </Row>
+                    <Progress
+                      value={percent(value, m.expenses)}
+                      color={chartColors[i % chartColors.length]}
+                    />
+                    <T muted size={12} style={{ marginTop: 6 }}>
+                      {percent(value, m.expenses).toFixed(1)}% ·{" "}
+                      {
+                        m.txs.filter(
+                          (t) =>
+                            t.type === "expense" && t.category === category,
+                        ).length
+                      }{" "}
+                      transactions
+                    </T>
+                    <Button
+                      title={`View ${category} expenses`}
+                      variant="secondary"
+                      style={{ marginTop: 8 }}
+                      onPress={() => {
+                        setCategoryFilter(category);
+                        setQuery("");
+                        setFilter("Expense");
+                        setLimit(25);
+                        setPanel("Activity");
+                      }}
+                    />
+                  </View>
+                ))}
+            </Card>
+          ) : (
+            <Empty
+              title="No expenses in this period"
+              body="Add an expense or choose another month to see the category breakdown."
+            />
+          )}
         </>
       ) : null}
       {panel === "Budgets" ? (

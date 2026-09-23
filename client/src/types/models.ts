@@ -53,6 +53,9 @@ export const transactionSchema = z.object({
   importKey: z.string().optional(),
   billId: z.string().optional(),
   billDueDate: dateSchema.optional(),
+  incomeSource: z
+    .enum(["Salary", "Bonus", "Freelance", "Gift", "Refund", "Other"])
+    .optional(),
 });
 export const accountSchema = z.object({
   id: text,
@@ -74,6 +77,26 @@ export const goalSchema = z.object({
   current: money,
   targetDate: dateSchema,
   emergency: z.boolean().default(false),
+  plan: z
+    .object({
+      kind: z.enum(["savings", "investment"]),
+      frequency: z.enum(["daily", "weekly", "monthly"]),
+      optionId: z.enum(["rd", "fd", "debt", "hybrid", "index"]).optional(),
+      amount: money,
+      payments: z.number().int().min(0),
+      finalAmount: money,
+      startDate: dateSchema,
+    })
+    .refine(
+      (p) =>
+        p.kind !== "investment" || (!!p.optionId && p.frequency === "monthly"),
+      "Choose an investment option for an investment plan",
+    )
+    .refine(
+      (p) => p.kind !== "savings" || !p.optionId,
+      "Savings plans cannot contain an investment option",
+    )
+    .optional(),
 });
 export const holdingSchema = z.object({
   id: text,
@@ -125,6 +148,7 @@ export const profileSchema = z.object({
   risk: z.enum(risks),
   darkMode: z.boolean(),
   sipTarget: money,
+  savingsTarget: money.optional(),
   allocation: z
     .object({
       Essentials: money.max(100),
