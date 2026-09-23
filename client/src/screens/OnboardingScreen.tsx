@@ -13,14 +13,22 @@ import {
   ErrorText,
   Row,
 } from "../components/ui";
-import { emptyState, demoState } from "../data/seed";
+import { emptyState } from "../data/seed";
 import { useApp } from "../store/AppProvider";
 import { risks, type Risk, profileSchema } from "../types/models";
 import { numberInput } from "../utils/format";
-export function OnboardingScreen() {
+export function OnboardingScreen({
+  initialStep = 0,
+  onGetStarted,
+  initialName = "",
+}: {
+  initialStep?: number;
+  onGetStarted?: () => void;
+  initialName?: string;
+}) {
   const { dispatch } = useApp(),
-    [step, setStep] = useState(0),
-    [name, setName] = useState(""),
+    [step, setStep] = useState(initialStep),
+    [name, setName] = useState(initialName),
     [income, setIncome] = useState("0"),
     [balance, setBalance] = useState("0"),
     [sip, setSip] = useState("0"),
@@ -100,17 +108,9 @@ export function OnboardingScreen() {
                 Your expense manager, goals and investment planner, together in
                 one place.
               </T>
-              <Button title="Set up my finances" onPress={next} />
-              <Button
-                title="Explore the demo"
-                variant="secondary"
-                onPress={() =>
-                  dispatch({ type: "REPLACE", state: demoState() })
-                }
-                style={{ marginTop: 12 }}
-              />
+              <Button title="Get started" onPress={onGetStarted ?? next} />
               <T muted size={11} style={{ marginTop: 16, textAlign: "center" }}>
-                No account or bank connection required.
+                Your expense manager, savings goals and investment plans.
               </T>
             </>
           ) : (

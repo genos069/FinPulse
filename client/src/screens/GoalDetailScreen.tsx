@@ -14,6 +14,7 @@ import {
   ErrorText,
   Note,
 } from "../components/ui";
+import { goalPlanLabel } from "../utils/planning";
 import { dateLabel, monthsUntil } from "../utils/date";
 import { inr, numberInput, percent } from "../utils/format";
 import { monthsToGoal, requiredSip } from "../utils/finance";
@@ -23,7 +24,8 @@ export function GoalDetailScreen({
 }: NativeStackScreenProps<RootStackParams, "GoalDetail">) {
   const { state, dispatch } = useApp(),
     goal = state.goals.find((g) => g.id === route.params.id);
-  const [amount, setAmount] = useState(""),
+  const [confirmRemove, setConfirmRemove] = useState(false),
+    [amount, setAmount] = useState(""),
     [monthly, setMonthly] = useState("5000"),
     [rate, setRate] = useState("8"),
     [error, setError] = useState<string | null>(null);
@@ -65,10 +67,21 @@ export function GoalDetailScreen({
       <Button
         title="Edit goal"
         variant="secondary"
-        onPress={() =>
-          navigation.navigate("Entity", { kind: "goals", id: goal.id })
-        }
+        onPress={() => navigation.navigate("GoalCreate", { id: goal.id })}
       />
+      {goal.plan ? (
+        <Card style={{ marginTop: 16 }}>
+          <T bold>{goalPlanLabel(goal)}</T>
+          <T muted style={{ marginTop: 8 }}>
+            {inr(goal.plan.amount)} {goal.plan.frequency} · {goal.plan.payments}{" "}
+            planned payments
+          </T>
+          <T size={12} muted>
+            Final payment {inr(goal.plan.finalAmount)}. Record each contribution
+            after you set the money aside.
+          </T>
+        </Card>
+      ) : null}
       <Section title="Add to your progress" />
       <Card>
         <Field
@@ -100,6 +113,24 @@ export function GoalDetailScreen({
           account or move real money.
         </Note>
       </Card>
+      <Button
+        title={confirmRemove ? "Confirm remove goal" : "Remove goal"}
+        variant="danger"
+        onPress={() => {
+          if (confirmRemove) {
+            dispatch({ type: "REMOVE", key: "goals", id: goal.id });
+            navigation.goBack();
+          } else setConfirmRemove(true);
+        }}
+      />
+      {confirmRemove ? (
+        <Button
+          title="Keep goal"
+          variant="secondary"
+          style={{ marginTop: 8 }}
+          onPress={() => setConfirmRemove(false)}
+        />
+      ) : null}
       <Section title="What if I save more?" />
       <Card>
         <Field

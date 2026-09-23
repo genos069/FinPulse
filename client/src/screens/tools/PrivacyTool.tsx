@@ -12,6 +12,7 @@ import { useApp } from "../../store/AppProvider";
 import { stateSchema, type AppState } from "../../types/models";
 import { emptyState, demoState } from "../../data/seed";
 import { pickTextFile, exportText } from "../../services/files";
+import { loadState } from "../../services/storage";
 import { transactionsCsv } from "../../utils/imports";
 export function PrivacyTool() {
   const { state, recover } = useApp(),
@@ -35,6 +36,24 @@ export function PrivacyTool() {
       );
     } catch (e) {
       setError((e as Error).message);
+    }
+  }
+  async function loadEarlierRecords() {
+    setError(null);
+    try {
+      const earlier = await loadState();
+      if (!earlier?.onboarded) {
+        setError("No earlier on-device records were found.");
+        return;
+      }
+      setPending(earlier);
+      setReason(
+        `Copy ${earlier.transactions.length} earlier transactions and ${earlier.goals.length} goals into this profile? The original records are retained.`,
+      );
+    } catch {
+      setError(
+        "Earlier records could not be read. Restore a JSON backup instead.",
+      );
     }
   }
   async function confirm() {
@@ -72,8 +91,8 @@ export function PrivacyTool() {
       </T>
       <Note>
         Your records are stored locally. Bank sync and cloud backup are not
-        connected. Audio and receipt uploads happen only when you use a
-        configured service.
+        connected. Voice recognition may use your device or browser speech
+        service. Receipt uploads happen only when you use a configured service.
       </Note>
       <Card>
         <T bold>
@@ -95,6 +114,12 @@ export function PrivacyTool() {
         title="Restore a JSON backup"
         variant="secondary"
         onPress={() => void restore()}
+        style={{ marginTop: 12 }}
+      />
+      <Button
+        title="Import earlier on-device records"
+        variant="secondary"
+        onPress={() => void loadEarlierRecords()}
         style={{ marginTop: 12 }}
       />
       <Section title="Start again" />

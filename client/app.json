@@ -40,7 +40,14 @@
         }
       ],
       "expo-sharing",
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-speech-recognition",
+        {
+          "microphonePermission": "Use your microphone to dictate a transaction.",
+          "speechRecognitionPermission": "Turn your spoken transaction into text for review."
+        }
+      ]
     ]
   }
 }

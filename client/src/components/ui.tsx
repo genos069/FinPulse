@@ -131,7 +131,7 @@ export function Button({
   const c = useTheme(),
     bg =
       variant === "primary"
-        ? "#12b76a"
+        ? "#0f766e"
         : variant === "danger"
           ? c.redBg
           : c.greenBg;
@@ -162,7 +162,7 @@ export function Button({
         style={{
           color:
             variant === "primary"
-              ? "#052e1b"
+              ? "#ffffff"
               : variant === "danger"
                 ? c.red
                 : c.green,
@@ -486,18 +486,20 @@ export function Screen({
   subtitle,
   right,
   tab = false,
+  sheet = false,
 }: {
   children: ReactNode;
   title?: string;
   subtitle?: string;
   right?: ReactNode;
   tab?: boolean;
+  sheet?: boolean;
 }) {
   const c = useTheme();
   return (
     <SafeAreaView
-      edges={tab ? ["top"] : ["bottom"]}
-      style={{ flex: 1, backgroundColor: c.bg }}
+      edges={sheet ? ["top", "bottom"] : tab ? ["top"] : ["bottom"]}
+      style={{ flex: 1, backgroundColor: sheet ? c.card : c.bg }}
     >
       <KeyboardAvoidingView
         style={{ flex: 1 }}

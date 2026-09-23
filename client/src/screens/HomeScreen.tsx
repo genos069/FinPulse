@@ -4,7 +4,7 @@ import {
   ArrowDownLeft,
   Plus,
   Target,
-  BookOpen,
+  ArrowLeftRight,
   Mic,
   ScanLine,
   MessageCircle,
@@ -167,22 +167,22 @@ export function HomeScreen() {
           {
             label: "Expense",
             Icon: ArrowDownLeft,
-            action: () => nav.navigate("Transaction", { type: "expense" }),
+            action: () => nav.navigate("Expense"),
           },
           {
             label: "Income",
             Icon: Plus,
-            action: () => nav.navigate("Transaction", { type: "income" }),
+            action: () => nav.navigate("Income"),
           },
           {
             label: "Goal",
             Icon: Target,
-            action: () => nav.navigate("Entity", { kind: "goals" }),
+            action: () => nav.navigate("GoalCreate"),
           },
           {
-            label: "Lessons",
-            Icon: BookOpen,
-            action: () => nav.navigate("Tools", { tool: "lessons" }),
+            label: "Transfer",
+            Icon: ArrowLeftRight,
+            action: () => nav.navigate("Transaction", { type: "transfer" }),
           },
         ].map(({ label, Icon, action }) => (
           <Pressable
@@ -207,6 +207,11 @@ export function HomeScreen() {
           </Pressable>
         ))}
       </Row>
+      <Section
+        title="Your goals"
+        action="View all →"
+        onPress={() => nav.navigate("Goals")}
+      />
       <Section
         title={`${new Date().toLocaleDateString("en-IN", { month: "long" })} overview`}
         action="Report →"
@@ -341,7 +346,7 @@ export function HomeScreen() {
           title="Voice"
           variant="secondary"
           icon={<Mic size={17} color={c.green} />}
-          onPress={() => nav.navigate("Capture", { mode: "voice" })}
+          onPress={() => nav.navigate("Voice")}
           style={{ flex: 1 }}
         />
         <Button

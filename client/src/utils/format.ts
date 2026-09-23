@@ -2,7 +2,8 @@ export const inr = (n: number) =>
   new Intl.NumberFormat("en-IN", {
     style: "currency",
     currency: "INR",
-    maximumFractionDigits: 0,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
   }).format(Number.isFinite(n) ? n : 0);
 export const compact = (n: number) =>
   Math.abs(n) >= 1e7

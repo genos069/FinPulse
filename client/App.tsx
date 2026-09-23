@@ -9,10 +9,14 @@ import { RootNavigator } from "./src/navigation/RootNavigator";
 import { OnboardingScreen } from "./src/screens/OnboardingScreen";
 import { ErrorBoundary } from "./src/components/ErrorBoundary";
 import { T, Button, Screen, ErrorText } from "./src/components/ui";
+import { AuthProvider, useAuth } from "./src/store/AuthProvider";
+import { LoginScreen } from "./src/screens/LoginScreen";
 import { emptyState } from "./src/data/seed";
 import { pickTextFile } from "./src/services/files";
 import { stateSchema } from "./src/types/models";
 function Content() {
+  const auth = useAuth();
+  const [login, setLogin] = useState(false);
   const { state, ready, error, blocked, recover, retry } = useApp(),
     c = useTheme(),
     [confirm, setConfirm] = useState(false),
@@ -27,7 +31,7 @@ function Content() {
       );
     }
   }
-  if (!ready)
+  if (!ready || !auth.ready)
     return (
       <View
         style={{ flex: 1, justifyContent: "center", backgroundColor: c.bg }}
@@ -73,21 +77,43 @@ function Content() {
           />
         </View>
       ) : null}
-      {state.onboarded ? <RootNavigator /> : <OnboardingScreen />}
+      {!auth.session && !auth.demo ? (
+        login ? (
+          <LoginScreen onBack={() => setLogin(false)} />
+        ) : (
+          <OnboardingScreen onGetStarted={() => setLogin(true)} />
+        )
+      ) : state.onboarded ? (
+        <RootNavigator />
+      ) : (
+        <OnboardingScreen
+          initialStep={1}
+          initialName={auth.session?.user.name}
+        />
+      )}
     </View>
+  );
+}
+function SessionApp() {
+  const { session, demo } = useAuth();
+  const scope = session ? `user-${session.user.id}` : demo ? "demo" : undefined;
+  return (
+    <AppProvider key={scope ?? "guest"} scope={scope} demo={demo}>
+      <ThemeProvider>
+        <LockProvider>
+          <Content />
+        </LockProvider>
+      </ThemeProvider>
+    </AppProvider>
   );
 }
 export default function App() {
   return (
     <SafeAreaProvider>
       <ErrorBoundary>
-        <AppProvider>
-          <ThemeProvider>
-            <LockProvider>
-              <Content />
-            </LockProvider>
-          </ThemeProvider>
-        </AppProvider>
+        <AuthProvider>
+          <SessionApp />
+        </AuthProvider>
       </ErrorBoundary>
     </SafeAreaProvider>
   );

@@ -1,6 +1,12 @@
 import type { EntityKey, Transaction } from "../types/models";
 export type RootStackParams = {
   Tabs: undefined;
+  Expense: undefined;
+  Income: undefined;
+  GoalCreate: { id?: string } | undefined;
+  Goals: undefined;
+  Voice: undefined;
+  InvestmentSuggestions: undefined;
   Transaction:
     | { id?: string; type?: Transaction["type"]; draft?: Partial<Transaction> }
     | undefined;
@@ -28,7 +34,7 @@ export type RootStackParams = {
 export type TabParams = {
   Home: undefined;
   Money: undefined;
-  Goals: undefined;
+  Voice: undefined;
   Investments: undefined;
   Me: undefined;
 };
