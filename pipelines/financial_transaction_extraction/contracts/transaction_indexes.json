@@ -1,0 +1,10 @@
+{
+  "_comment": "Single source of truth for the indexes on the `transactions` collection. Checked by the Python worker tests (tests/test_index_contract.py) and by the Java TransactionIndexContractTest. MongoDB rejects an index whose keys match an existing one but whose name or options differ, so both services must declare exactly these.",
+  "indexes": [
+    {"name": "userId_sourceHash_unique", "keys": [["userId", 1], ["sourceHash", 1]], "unique": true},
+    {"name": "userId_date", "keys": [["userId", 1], ["date", -1]], "unique": false},
+    {"name": "userId_category_date", "keys": [["userId", 1], ["category", 1], ["date", -1]], "unique": false},
+    {"name": "userId_direction_date", "keys": [["userId", 1], ["direction", 1], ["date", -1]], "unique": false},
+    {"name": "userId_needsReview", "keys": [["userId", 1], ["needsReview", 1]], "unique": false}
+  ]
+}
