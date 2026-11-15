@@ -88,12 +88,21 @@ def ocr_image(img, cell=False) -> str:
             line = ImageOps.expand(line, border=16, fill=255)
             lines.append(pytesseract.image_to_string(line, config="--psm 7", timeout=60).strip())
         return "\n".join(lines)
+    # Straighten scans and remove table grid lines (which otherwise make Tesseract drop whole rows).
+    # Guarded: without numpy the original behaviour is kept.
+    had_rules = False
+    try:
+        from ocr_preprocessing import prepare_for_ocr, strip_table_artifacts
+        img, had_rules = prepare_for_ocr(img)
+    except ImportError:
+        pass
     if img.width < 1800:
         scale = min(4, 1800 / img.width)
         img = img.resize((int(img.width * scale), int(img.height * scale)), Image.Resampling.LANCZOS)
     img = ImageOps.autocontrast(img)
     try:
-        return pytesseract.image_to_string(img, config="--psm 6 -c preserve_interword_spaces=1", timeout=60)
+        text = pytesseract.image_to_string(img, config="--psm 6 -c preserve_interword_spaces=1", timeout=60)
+        return strip_table_artifacts(text) if had_rules else text
     except pytesseract.TesseractNotFoundError:
         raise RuntimeError(
             "Tesseract OCR is not installed, but images and scanned PDFs need it. Windows: download the "
@@ -430,6 +439,45 @@ def parse_statement_table(table, source):
     return records, candidates
 
 
+# Statement rows: money tokens that also understand a leading minus ("-120.50", overdrawn balances) and
+# accounting parentheses "(120.50)". PLAIN_AMT_RE deliberately rejects a number preceded by "-" (it guards
+# against ranges/identifiers), which made every signed amount invisible and promoted the running balance
+# to "the amount". A "-" only counts when it is not glued to a preceding word character.
+SIGNED_AMT_RE = re.compile(r"(?:(?<![\w.,/-])(-)?(\d[\d,]*\.\d{2})(?!\d))|(?:\((\d[\d,]*\.\d{2})\))")
+
+
+def _money_tokens(text: str) -> list[tuple[float, bool]]:
+    """[(absolute value, written_as_negative)] in order of appearance."""
+    tokens = []
+    for m in SIGNED_AMT_RE.finditer(text):
+        if m.group(2) is not None:
+            tokens.append((to_float(m.group(2)), bool(m.group(1))))
+        else:
+            tokens.append((to_float(m.group(3)), True))
+    return tokens
+
+
+def _statement_amounts(work: str) -> tuple[Optional[float], Optional[float], bool]:
+    """(transaction amount (absolute), balance-after (signed), amount_written_negative)."""
+    tokens = _money_tokens(work)
+    if not tokens:
+        tokens = [(to_float(x), False) for x in PREFIXED_AMT_RE.findall(work)]
+    if len(tokens) >= 2:                    # ... <txn amount> <balance>
+        (amount, negative), (balance, balance_negative) = tokens[-2], tokens[-1]
+        return amount, (-balance if balance_negative else balance), negative
+    if tokens:
+        return tokens[0][0], None, tokens[0][1]
+    return None, None, False
+
+
+def extract_amounts_signed(rec: str, mode: str) -> tuple[Optional[float], Optional[float], bool]:
+    """Like extract_amounts, plus whether the amount was written as negative (a debit marker)."""
+    if mode == "sms":
+        amount, balance = extract_amounts(rec, mode)
+        return amount, balance, False
+    return _statement_amounts(DATE_RE.sub(" ", rec))
+
+
 def extract_amounts(rec: str, mode: str) -> tuple[Optional[float], Optional[float]]:
     """Return (transaction amount, balance-after)."""
     work = DATE_RE.sub(" ", rec)
@@ -443,11 +491,8 @@ def extract_amounts(rec: str, mode: str) -> tuple[Optional[float], Optional[floa
                [to_float(x) for x in KEYWORD_AMT_RE.findall(work)] or \
                [to_float(x) for x in PLAIN_AMT_RE.findall(work)]
         return (vals[0] if vals else None), balance
-    vals = [to_float(x) for x in PLAIN_AMT_RE.findall(work)] or \
-           [to_float(x) for x in PREFIXED_AMT_RE.findall(work)]
-    if len(vals) >= 2:                      # ... <txn amount> <balance>
-        return vals[-2], vals[-1]
-    return (vals[0] if vals else None), None
+    amount, balance, _ = _statement_amounts(work)
+    return amount, balance
 
 
 def clean_narration(rec: str) -> str:
@@ -529,7 +574,7 @@ def parse_record(rec: str, mode: str, source: str, ctx: ParseContext) -> tuple[O
     if mode == "sms" and BAL_WORD_RE.search(rec) and not keyword_direction(rec):
         return None, "balance_alert"
 
-    amount, balance = extract_amounts(rec, mode)
+    amount, balance, negative = extract_amounts_signed(rec, mode)
     if amount is None:
         return None, "no_amount"
 
@@ -540,6 +585,8 @@ def parse_record(rec: str, mode: str, source: str, ctx: ParseContext) -> tuple[O
             direction = "credit"
         elif abs(ctx.prev_balance - amount - balance) < 0.01:
             direction = "debit"
+    if direction is None and negative:
+        direction = "debit"                                   # "-450.00" / "(450.00)"
     direction = direction or keyword_direction(rec)
     if balance is not None:
         ctx.prev_balance = balance

@@ -25,3 +25,5 @@ truststore==0.10.5
 typing-inspection==0.4.5
 typing_extensions==4.16.0
 pymongo>=4.6
+
+numpy>=1.26   # image preprocessing (ocr_preprocessing.py)

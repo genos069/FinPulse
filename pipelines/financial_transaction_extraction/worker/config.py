@@ -25,6 +25,19 @@ def _positive_float(env: Mapping[str, str], name: str, default: float) -> float:
     return value
 
 
+def _non_negative_float(env: Mapping[str, str], name: str, default: float) -> float:
+    raw = env.get(name)
+    if raw is None or raw.strip() == "":
+        return default
+    try:
+        value = float(raw)
+    except ValueError as exc:
+        raise ConfigError(f"{name} must be a number") from exc
+    if value < 0:
+        raise ConfigError(f"{name} must not be negative")
+    return value
+
+
 def _flag(env: Mapping[str, str], name: str, default: bool) -> bool:
     raw = env.get(name)
     if raw is None or raw.strip() == "":
@@ -55,6 +68,16 @@ class WorkerConfig:
     ensure_indexes: bool = True
     health_file: Optional[str] = None
     enable_llm_categorizer: bool = False
+    # OCR quality gate for uploaded IMAGES (0 disables). Provisional values from a small synthetic
+    # measurement: ~92 clean, ~50 heavily blurred, ~12-21 heavy noise. Recalibrate on real uploads.
+    ocr_min_confidence: float = 40.0        # below this (or no text at all): reject, image too unclear
+    ocr_review_confidence: float = 75.0     # below this: accept but flag every extracted row for review
+    # Optional local ML category fallback for rows the keyword rules left "Uncategorized". Off by default:
+    # on the bundled synthetic data it does NOT beat the rules (see categorization/README).
+    enable_ml_categorizer: bool = False
+    ml_model_dir: Optional[str] = None
+    ml_min_confidence: float = 0.6
+    ml_model_sha256: Optional[str] = None
     log_level: str = "INFO"
 
     @property
@@ -72,6 +95,8 @@ class WorkerConfig:
         if not bucket or not database:
             raise ConfigError("MONGODB_DATABASE and GRIDFS_BUCKET must not be blank")
         attempts = int(_positive_float(env, "MAX_JOB_ATTEMPTS", 3))
+        if _flag(env, "ENABLE_ML_CATEGORIZER", False) and not (env.get("ML_MODEL_DIR") or "").strip():
+            raise ConfigError("ML_MODEL_DIR is required when ENABLE_ML_CATEGORIZER is true")
         return cls(
             mongodb_uri=uri,
             mongodb_database=database,
@@ -87,5 +112,11 @@ class WorkerConfig:
             ensure_indexes=_flag(env, "ENSURE_INDEXES", True),
             health_file=(env.get("HEALTH_FILE") or None),
             enable_llm_categorizer=_flag(env, "ENABLE_LLM_CATEGORIZER", False),
+            ocr_min_confidence=_non_negative_float(env, "OCR_MIN_CONFIDENCE", 40.0),
+            ocr_review_confidence=_non_negative_float(env, "OCR_REVIEW_CONFIDENCE", 75.0),
+            enable_ml_categorizer=_flag(env, "ENABLE_ML_CATEGORIZER", False),
+            ml_model_dir=(env.get("ML_MODEL_DIR") or None),
+            ml_min_confidence=_non_negative_float(env, "ML_MIN_CONFIDENCE", 0.6),
+            ml_model_sha256=(env.get("ML_MODEL_SHA256") or None),
             log_level=(env.get("LOG_LEVEL") or "INFO").upper(),
         )

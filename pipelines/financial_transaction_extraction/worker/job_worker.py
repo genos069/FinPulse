@@ -18,6 +18,7 @@ from .errors import LeaseLostError, MappingError, PermanentJobError
 from .gridfs_storage import GridFsStorage, parse_object_id
 from .job_manager import FAILED, NOT_OWNER, RETRY_SCHEDULED, JobManager, utcnow
 from .logging_utils import log
+from .ml_adapter import apply_ml_categories
 from .transaction_mapper import map_transaction
 from .transaction_store import TransactionStore
 
@@ -37,6 +38,7 @@ class JobOutcome:
     partial: bool
     document_id: object
     user_id: str
+    ocr_confidence: Optional[float] = None
 
 
 class LeaseHeartbeat(threading.Thread):
@@ -73,6 +75,14 @@ def default_pipeline_factory(config: WorkerConfig) -> Callable[[], object]:
     return build
 
 
+def default_confidence_fn(path: str) -> Optional[float]:
+    """Mean Tesseract confidence (0-100) of an image file, or None when no text was recognised."""
+    from PIL import Image
+    from ocr_preprocessing import mean_confidence
+    with Image.open(path) as image:
+        return mean_confidence(image.copy())
+
+
 def temp_filename(document: dict) -> str:
     ext = EXTENSIONS.get(document.get("contentType"))
     if ext is None:
@@ -85,7 +95,9 @@ def temp_filename(document: dict) -> str:
 class JobWorker:
     def __init__(self, config: WorkerConfig, db: Database,
                  pipeline_factory: Optional[Callable[[], object]] = None,
-                 clock: Callable[[], datetime] = utcnow):
+                 clock: Callable[[], datetime] = utcnow,
+                 confidence_fn: Optional[Callable[[str], Optional[float]]] = None,
+                 ml_categorizer=None):
         self.config = config
         self._clock = clock
         self.jobs = JobManager(db, config, clock)
@@ -93,6 +105,11 @@ class JobWorker:
         self.store = TransactionStore(db)
         self._documents = db["uploaded_documents"]
         self._pipeline_factory = pipeline_factory or default_pipeline_factory(config)
+        self._confidence_fn = confidence_fn or default_confidence_fn
+        self._ml = ml_categorizer
+        if self._ml is None and config.enable_ml_categorizer:
+            from categorization.model import MLCategorizer       # imported lazily: needs scikit-learn
+            self._ml = MLCategorizer.load(config.ml_model_dir, config.ml_min_confidence, config.ml_model_sha256)
         if config.temp_directory:
             os.makedirs(config.temp_directory, exist_ok=True)
 
@@ -168,6 +185,7 @@ class JobWorker:
         with tempfile.TemporaryDirectory(prefix="finpulse-", dir=self.config.temp_directory) as tmp:
             path = self.storage.download(document["gridFsFileId"], user_id, Path(tmp), filename)
             self._ensure_lease(heartbeat)
+            ocr_confidence = self._check_image_quality(document, path)
             result = self._pipeline_factory().process_file(str(path))
             self._ensure_lease(heartbeat)
 
@@ -180,6 +198,14 @@ class JobWorker:
             except MappingError:
                 mapping_errors += 1
 
+        if self._ml is not None:
+            apply_ml_categories(mapped, self._ml)
+        if ocr_confidence is not None:
+            for doc in mapped:
+                doc["ocrConfidence"] = round(ocr_confidence, 1)
+                if ocr_confidence < self.config.ocr_review_confidence:
+                    doc["needsReview"] = True              # low-quality scan: a human should confirm the figures
+
         summary = self.store.save_all(mapped, job["_id"])
         extracted = summary.saved + summary.already_saved
         duplicates = len(result.duplicates) + summary.duplicates
@@ -191,6 +217,19 @@ class JobWorker:
                           document_id=document_id, user_id=user_id)
 
     # ------------------------------------------------------------------ helpers
+    def _check_image_quality(self, document: dict, path: Path) -> Optional[float]:
+        """Confidence gate for uploaded images only (PDFs are not gated). Returns the confidence or None."""
+        if not str(document.get("contentType", "")).startswith("image/"):
+            return None
+        if self.config.ocr_min_confidence <= 0 and self.config.ocr_review_confidence <= 0:
+            return None
+        confidence = self._confidence_fn(str(path))
+        if confidence is None:
+            raise PermanentJobError("No readable text was found in the image")
+        if confidence < self.config.ocr_min_confidence:
+            raise PermanentJobError("The image is too unclear to read. Please upload a sharper photo or the PDF")
+        return confidence
+
     @staticmethod
     def _ensure_lease(heartbeat: LeaseHeartbeat) -> None:
         if heartbeat.lost.is_set():
