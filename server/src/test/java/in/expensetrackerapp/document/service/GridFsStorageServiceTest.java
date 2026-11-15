@@ -38,11 +38,12 @@ class GridFsStorageServiceTest {
     @Test
     void store_writesOwnerMetadataAndReturnsHexId() {
         ObjectId id = new ObjectId(VALID_ID);
-        ArgumentCaptor<Object> metadata = ArgumentCaptor.forClass(Object.class);
+        ArgumentCaptor<Document> metadata = ArgumentCaptor.forClass(Document.class);
         when(gridFsTemplate.store(any(InputStream.class), eq("f.pdf"), eq("application/pdf"), metadata.capture()))
                 .thenReturn(id);
 
-        String result = storage.store(new ByteArrayInputStream(new byte[]{1}), "f.pdf", "application/pdf", "user-1", "doc-1");
+        String result = storage.store(new ByteArrayInputStream(new byte[] { 1 }), "f.pdf", "application/pdf", "user-1",
+                "doc-1");
 
         assertThat(result).isEqualTo(VALID_ID);
         Document stored = (Document) metadata.getValue();
@@ -86,7 +87,7 @@ class GridFsStorageServiceTest {
     void deleteQuietly_deletesByIdAndSwallowsFailures() {
         org.mockito.Mockito.doThrow(new IllegalStateException("boom")).when(gridFsTemplate).delete(any(Query.class));
 
-        storage.deleteQuietly(VALID_ID);   // must not throw
+        storage.deleteQuietly(VALID_ID); // must not throw
 
         verify(gridFsTemplate).delete(any(Query.class));
     }
