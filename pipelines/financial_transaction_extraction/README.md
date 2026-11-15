@@ -1,94 +1,68 @@
-# FinPlus transaction extraction
+All 287 Python tests pass against the real MongoDB, including the benchmark guard and the previously failing fixture test. I'm adding the new worker settings to `.env.example` and bundling.
 
-Extract transactions from bank statements, receipt images, SMS screenshots and text logs.
-Outputs JSON and a bank-style CSV with **Date, Value Date, Description, Ref No./Cheque No., Debit, Credit, Balance**.
+Phase 7, the extraction pipeline improvements, is done and tested. All 287 Python tests pass against a real MongoDB 7.0.34 in my sandbox, including the previously failing fixture test. The Java side is untouched this phase, so it remains whatever your last build reported (164 passing, plus the Phase 6 dashboard tests I haven't seen run).
 
-## Setup (Windows)
+## How I worked
 
-Install Python 3.10+ and Tesseract OCR, then run:
+I built a labelled synthetic benchmark first, so changes came from measured failures. The existing pipeline turned out to be strong: Indian number grouping, all five date formats, multi-line narrations and Dr/Cr columns were already fine, so I left them alone.
 
-```powershell
-py -m venv .venv
-.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
-```
+| Benchmark | Original pipeline | Now |
+|---|---|---|
+| Digital statements (16 documents, 270 rows) | 0.904 | **0.993** |
+| Scanned statements (8 documents, 80 rows) | 0.175 | **0.825** |
+| Wrong rows that were *not* flagged for review | 0 | 0 |
 
-Tesseract is only required for images and scanned PDFs. If it is not found automatically,
-set `TESSERACT_CMD` to the full path of `tesseract.exe`. The usual Windows location is
-`C:\Program Files\Tesseract-OCR\tesseract.exe`.
+The benchmark is synthetic, so it finds failures and guards against regressions but doesn't predict accuracy on real phone photos or customer documents.
 
-## Run
+## What I fixed
 
-```powershell
-python transaction_pipeline.py uploads --out output/transactions.json --csv output/transactions.csv
-python transaction_pipeline.py bank.pdf --pdf-password YOUR_PASSWORD
-python transaction_pipeline.py --sms "Rs 450 debited to SWIGGY on 03-Oct-26 Ref 427619384729"
-```
+- **Signed amounts.** `PLAIN_AMT_RE` rejected any number preceded by `-`, so for `-120.50 84,879.50` the running balance was stored as the transaction amount. I added recognition of a leading minus and accounting parentheses, and a negative amount now counts as evidence of a debit. This is a minimal edit to `transaction_pipeline.py`: six lines replaced, with the original contract kept.
+- **Scanned tables.** Grid lines made Tesseract drop whole rows, and stray `|` marks made the pipeline misread the page as an SMS log. The new `ocr_preprocessing.py` deskews the scan, removes table rules (including narrow tables) and strips stray marks, only when rules were found. Thickening thin lines before table detection gave no gain, so I rejected it.
+- **Image quality gate (worker).** The thresholds come from only 11 synthetic images, so they are provisional and configurable (`OCR_MIN_CONFIDENCE`, `OCR_REVIEW_CONFIDENCE`):
 
-Running without arguments processes `uploads/`. If it is empty, the program exits with a
-message. **No demo runs and no synthetic transactions are injected.** The old demo PDF
-generator has been removed. Existing `samples/` files remain as regression fixtures;
-process them only when explicitly requested.
+| Tesseract confidence | What happens |
+|---|---|
+| No text found | Job fails, "no readable text" |
+| Below 40 | Job fails, "too unclear" |
+| 40 to 75 | Processed, every row flagged `needsReview` |
+| 75 or above | Normal |
 
-VS Code F5 configurations support the uploads folder, a selected file, a protected PDF,
-and pasted SMS. Outputs default to `output/`:
+  PDFs aren't gated.
+- **Missing fixture.** `samples/extended_statement.pdf` (9 transactions, 3 discards, both reference formats) now exists with a byte-reproducible generator. Tests now run from any working directory.
 
-- `transactions.json`: accepted records, including signed amount, debit/credit columns,
-  reference, balance, category, review flag and possible-duplicate link.
-- `transactions.csv`: full bank-style table, readable in Excel. Import the reference column
-  as **Text** to preserve leading zeros and long identifiers. JSON always stores it as text.
-- `report.json`: duplicates, rejected records with full extracted text and reasons, and file errors.
-- `store.json`: local duplicate memory. Use `--store ""` for a stateless run.
+## The ML categorizer does not beat your rules
 
-## Extraction behavior
+The full ML code exists: dataset schema, training, evaluation, versioned and checksum-verified artifacts, a confidence fallback, and an export tool that builds training data from user corrections with PII masked. But on the bundled synthetic data it performs worse than the existing keyword rules:
 
-Ruled PDF tables retain their cells. Ruled statement images/scans are read cell by cell,
-so blank debit/credit cells and the balance column are not confused. PDF pages are processed
-individually; scanned bodies with a small text heading also trigger OCR. Multi-frame image
-files are processed frame by frame. Unruled tables fall back to text/date-boundary parsing.
+| | Accuracy | Macro-F1 |
+|---|---|---|
+| ML model | 0.41 | 0.46 |
+| Existing rules, same unseen merchants | 0.78 | 0.81 |
 
-SMS logs retain wrapped reference numbers and dates. Supported labels include Ref/Refno,
-Reference, UTR, RRN, UPI no., transaction ID and IMPS/NEFT/RTGS identifiers. Unlabelled
-12-digit numbers are no longer assumed to be references. Masked references are retained
-for display and review but are not used to prove duplicates.
+On the 17 rows the rules couldn't place, the model was right 24% of the time and never reached the 0.6 confidence threshold. So it stays **off by default** (`ENABLE_ML_CATEGORIZER=false`). Enable it only after training on real user corrections and seeing it win on the "rows the rules could not place" metric in `metrics.json`. That also needs your app in use long enough to collect corrections.
 
-Exact repeats and matching complete references/amounts are de-duplicated. Similar merchant,
-date and amount alone only **flag** a possible duplicate; they do not delete a payment.
-Different complete references are retained. OTPs, offers, balance-only messages and future
-payment reminders are not recorded as completed payments.
+## Process issues I found in my own tests
 
-OCR is not guaranteed to read every digit correctly, especially in blurred, tilted or
-cropped images. Inspect review flags and the rejection report against the source. Keep
-statements upright with clear borders for table extraction. Unknown formats may need
-additional adapters; this is a local CLI/library, not an authenticated multi-user API.
-The JSON store is intended for single-process use, not concurrent production writes.
+- Mutation testing caught that the rule "a negative amount means debit" was untested, because my end-to-end test skipped the first row, the only place it matters. I added tests; 13 of 13 deliberate breakages are now caught.
+- Writing tests exposed that "UPI REF 123456" would have been classified confidently from the payment-rail word alone. Generic payment words no longer count as signal.
+- My earlier odd benchmark discrepancy was my own script overwriting a source file, not Tesseract nondeterminism. OCR results are identical across processes.
 
-Optional `--llm` categorization requires `anthropic` and `ANTHROPIC_API_KEY`. It does not
-repair OCR or infer missing references.
+## What I couldn't verify
 
-## MongoDB input / output
+- Tesseract versions differ, especially on Windows. The scanned-benchmark thresholds are deliberately loose, but the silent-error check is strict, so a failure there on your machine is worth reporting.
+- The OCR confidence thresholds are provisional, calibrated on 11 synthetic images.
+- Parentheses and leading minus are handled; a trailing minus (`450.00-`) is not.
+
+## Try it (PowerShell, from `pipelines/financial_transaction_extraction/`)
 
 ```powershell
-python -m pip install -r requirements.txt
-$env:MONGODB_URI = "mongodb+srv://USER:PASS@cluster.mongodb.net"   # or use --mongo-uri
-python transaction_pipeline.py --from-mongo --to-mongo --user-id u1
+pip install -r requirements-dev.txt
+python -m pytest tests -q                                  # add -m "not slow" to skip the OCR benchmark
+python -m evaluation.run_extraction_eval                   # the benchmark table
+python -m categorization.train --out models                # ML demo, prints the honest comparison
 ```
 
-- **Input** - collection `raw_inputs`. Documents with no `status` (or `pending`) are read, then marked `processed` / `error`:
-  - `{"type": "sms", "text": "Rs 450 debited to SWIGGY on 03-Oct-26 Ref 427619384729"}`
-  - `{"type": "text", "text": "<pasted SMS log>", "source": "log1"}`
-  - `{"type": "file", "filename": "statement.pdf", "data": <binary>, "pdf_password": "optional"}`
-- **Output** - collection `transactions` (upserted on unique `hash`) and collection `reports`
-  (duplicates, rejected rows, errors per run).
-- With `--to-mongo`/`--from-mongo`, MongoDB replaces `store.json` as duplicate memory, so re-running never
-  creates duplicates. Local files (`uploads/`, `--sms`) can still be mixed in the same run.
-- Never commit the connection string; keep it in `MONGODB_URI`.
+Next is Phase 8: filling the remaining test gaps (the spec's list of auth, document, job and transaction cases against what exists), a consolidated test plan, and the end-to-end flow tying Java and Python together. After that come the API docs and Postman collection, Dockerfiles and deployment.
 
-## Tests
-
-```powershell
-python -m unittest discover -s tests -v
-```
-
-Tests cover wrapped SMS, reference variants, dates, statement columns, repeat uploads and
-conservative duplicate handling. PDF fixtures need pdfplumber. OCR tests require Tesseract.
+Files are in /mnt/user-data/outputs:
+- finpulse-phase7.zip

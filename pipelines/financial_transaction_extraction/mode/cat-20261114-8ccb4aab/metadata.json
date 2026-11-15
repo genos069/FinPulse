@@ -1,0 +1,52 @@
+{
+  "version": "cat-20261114-8ccb4aab",
+  "created_at": "2026-11-14T18:25:55.936484+00:00",
+  "labels": [
+    "Bills",
+    "Education",
+    "Entertainment",
+    "Food",
+    "Healthcare",
+    "Investment",
+    "Other",
+    "Rent",
+    "Salary",
+    "Shopping",
+    "Transfer",
+    "Transport",
+    "Travel"
+  ],
+  "feature_spec": {
+    "text": "normalize_text(merchant, description, direction)",
+    "word_ngrams": [
+      1,
+      2
+    ],
+    "char_ngrams": [
+      3,
+      5
+    ],
+    "classifier": "LogisticRegression(multinomial, class_weight=balanced)"
+  },
+  "training_rows": 609,
+  "class_counts": {
+    "Food": 60,
+    "Shopping": 54,
+    "Travel": 42,
+    "Transport": 42,
+    "Bills": 51,
+    "Entertainment": 42,
+    "Healthcare": 42,
+    "Education": 42,
+    "Rent": 36,
+    "Salary": 36,
+    "Investment": 57,
+    "Transfer": 54,
+    "Other": 51
+  },
+  "training_data_sha256": "8ccb4aaba9af5c85c84498cd66754d01292b18a47e8cae4ea2f5abfc49e65222",
+  "model_sha256": "db2e43a3a0ff10f93fcb25cb858034f37bb95543409fca22a0ff7a1c3307487f",
+  "sklearn_version": "1.9.1",
+  "seed": 42,
+  "metrics_computed_on": "split model trained on the training merchants only (see metrics.json)"
+}
