@@ -26,7 +26,6 @@ output/*
 !output/.gitkeep
 store.json
 *.csv
-backups
 
 # ---- Editor / OS ----
 .vscode/
@@ -34,3 +33,4 @@ backups
 .DS_Store
 Thumbs.db
 desktop.ini
+!.env.example

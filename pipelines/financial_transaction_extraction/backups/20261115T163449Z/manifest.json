@@ -1,0 +1,10 @@
+[
+  {
+    "database": "expensetrackerdb",
+    "collections": {}
+  },
+  {
+    "database": "finplus",
+    "collections": {}
+  }
+]
