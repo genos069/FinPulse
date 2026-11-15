@@ -26,6 +26,7 @@ output/*
 !output/.gitkeep
 store.json
 *.csv
+backups
 
 # ---- Editor / OS ----
 .vscode/
