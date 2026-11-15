@@ -1,0 +1,40 @@
+package in.expensetrackerapp.transaction.dto;
+
+import in.expensetrackerapp.transaction.model.TransactionDirection;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
+import java.math.BigDecimal;
+
+/**
+ * Partial update (PATCH): a null field means "leave unchanged". Only these fields are editable;
+ * ownership, source hash, document and job links cannot be changed (unknown JSON fields are ignored).
+ */
+public record TransactionUpdateRequest(
+        @Pattern(regexp = "\\d{4}-\\d{2}-\\d{2}", message = "date must be in yyyy-MM-dd format")
+        String date,
+
+        @DecimalMin(value = "0.01", message = "amount must be positive")
+        @Digits(integer = 13, fraction = 2, message = "amount must have at most 13 integer digits and 2 decimals")
+        BigDecimal amount,
+
+        TransactionDirection direction,
+
+        @Size(min = 1, max = 200, message = "merchant must be between 1 and 200 characters")
+        String merchant,
+
+        @Size(max = 50, message = "category is too long")
+        String category,
+
+        @Size(max = 2000, message = "description must be at most 2000 characters")
+        String description,
+
+        Boolean needsReview) {
+
+    public boolean hasNoChanges() {
+        return date == null && amount == null && direction == null && merchant == null
+                && category == null && description == null && needsReview == null;
+    }
+}
