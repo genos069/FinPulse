@@ -1,0 +1,36 @@
+{
+  "_comment": "Dashboard totals for ONE user. Tokens @@USER_ID@@, @@CURRENCY@@, @@MONTH_START@@, @@MONTH_END@@ are replaced by exact-string substitution (never string concatenation) in DashboardAggregations (Java) and in the Python test that runs this same file against MongoDB. Rules: only verified rows (needsReview=false), only DEBIT/CREDIT, Transfer category excluded, only the configured currency (or no currency). Refunds (pipelineCategory 'Refund / Cashback' left in category 'Other') are CREDITs that are NOT income; they are reported separately.",
+  "pipeline": [
+    {"$match": {
+      "userId": "@@USER_ID@@",
+      "needsReview": false,
+      "direction": {"$in": ["DEBIT", "CREDIT"]},
+      "category": {"$ne": "Transfer"},
+      "$or": [{"currency": "@@CURRENCY@@"}, {"currency": null}]
+    }},
+    {"$group": {
+      "_id": null,
+      "totalIncome": {"$sum": {"$cond": [
+        {"$and": [{"$eq": ["$direction", "CREDIT"]}, {"$not": [{"$and": [{"$eq": ["$pipelineCategory", "Refund / Cashback"]}, {"$eq": ["$category", "Other"]}]}]}]},
+        "$amount", 0]}},
+      "totalRefunds": {"$sum": {"$cond": [
+        {"$and": [{"$eq": ["$direction", "CREDIT"]}, {"$eq": ["$pipelineCategory", "Refund / Cashback"]}, {"$eq": ["$category", "Other"]}]},
+        "$amount", 0]}},
+      "totalExpenses": {"$sum": {"$cond": [{"$eq": ["$direction", "DEBIT"]}, "$amount", 0]}},
+      "monthIncome": {"$sum": {"$cond": [
+        {"$and": [{"$gte": ["$date", "@@MONTH_START@@"]}, {"$lte": ["$date", "@@MONTH_END@@"]},
+                  {"$eq": ["$direction", "CREDIT"]},
+                  {"$not": [{"$and": [{"$eq": ["$pipelineCategory", "Refund / Cashback"]}, {"$eq": ["$category", "Other"]}]}]}]},
+        "$amount", 0]}},
+      "monthRefunds": {"$sum": {"$cond": [
+        {"$and": [{"$gte": ["$date", "@@MONTH_START@@"]}, {"$lte": ["$date", "@@MONTH_END@@"]},
+                  {"$eq": ["$direction", "CREDIT"]},
+                  {"$eq": ["$pipelineCategory", "Refund / Cashback"]}, {"$eq": ["$category", "Other"]}]},
+        "$amount", 0]}},
+      "monthExpenses": {"$sum": {"$cond": [
+        {"$and": [{"$gte": ["$date", "@@MONTH_START@@"]}, {"$lte": ["$date", "@@MONTH_END@@"]},
+                  {"$eq": ["$direction", "DEBIT"]}]},
+        "$amount", 0]}}
+    }}
+  ]
+}

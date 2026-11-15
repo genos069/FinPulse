@@ -1,0 +1,15 @@
+{
+  "_comment": "Expenses (DEBIT) per category for ONE user within one month. Same inclusion rules as totals_pipeline.json. Tokens: @@USER_ID@@, @@CURRENCY@@, @@MONTH_START@@, @@MONTH_END@@.",
+  "pipeline": [
+    {"$match": {
+      "userId": "@@USER_ID@@",
+      "needsReview": false,
+      "direction": "DEBIT",
+      "category": {"$ne": "Transfer"},
+      "date": {"$gte": "@@MONTH_START@@", "$lte": "@@MONTH_END@@"},
+      "$or": [{"currency": "@@CURRENCY@@"}, {"currency": null}]
+    }},
+    {"$group": {"_id": "$category", "total": {"$sum": "$amount"}, "transactionCount": {"$sum": 1}}},
+    {"$sort": {"total": -1, "_id": 1}}
+  ]
+}
