@@ -1,3 +1,5 @@
 -r requirements.txt
+-r requirements-ml.txt
 pytest>=8.0
 mongomock>=4.1
+reportlab>=4.0   # synthetic benchmark documents + fixture generator

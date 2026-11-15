@@ -34,3 +34,9 @@ store.json
 Thumbs.db
 desktop.ini
 !.env.example
+
+# ML: trained models are build artifacts; exported training data is personal data and must never be committed
+models/
+corrections*.csv
+exported_labels*.csv
+!categorization/data/seed_dataset.csv

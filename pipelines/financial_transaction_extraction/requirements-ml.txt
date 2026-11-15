@@ -1,0 +1,3 @@
+-r requirements.txt
+scikit-learn>=1.4   # optional: only for the ML category classifier (categorization/)
+joblib>=1.3

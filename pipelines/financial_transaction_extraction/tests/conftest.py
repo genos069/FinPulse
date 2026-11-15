@@ -82,3 +82,10 @@ def real_db():
     finally:
         client.drop_database(name)
         client.close()
+
+
+@pytest.fixture(autouse=True)
+def _run_from_pipeline_directory(monkeypatch):
+    """Several original tests open 'samples/...' relative to the pipeline directory; make that independent of
+    where pytest was started."""
+    monkeypatch.chdir(PIPELINE_DIR)

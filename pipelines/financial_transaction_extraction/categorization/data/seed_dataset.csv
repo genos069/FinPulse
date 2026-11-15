@@ -1,0 +1,610 @@
+merchant,description,direction,category,label_source
+Swiggy,SWIGGY PAYMENT REF 257203430925,debit,Food,synthetic
+Swiggy,SWIGGY TXN 249546454416 HYDERABAD,debit,Food,synthetic
+Swiggy,POS SWIGGY CHENNAI 143538686716,debit,Food,synthetic
+Zomato,POS ZOMATO CHENNAI 140292576874,debit,Food,synthetic
+Zomato,ZOMATO PAYMENT REF 18171308224,debit,Food,synthetic
+Zomato,UPI-ZOMATO-959142567647@paytm,debit,Food,synthetic
+Dominos Pizza,DOMINOS PIZZA TXN 966481892859 DELHI,debit,Food,synthetic
+Dominos Pizza,NEFT-DOMINOS PIZZA-258053530722,debit,Food,synthetic
+Dominos Pizza,POS DOMINOS PIZZA PUNE 737284429558,debit,Food,synthetic
+McDonalds,MCDONALDS TXN 900134134339 HYDERABAD,debit,Food,synthetic
+McDonalds,MCDONALDS PAYMENT REF 292996277285,debit,Food,synthetic
+McDonalds,UPI-MCDONALDS-673395282243@icici,debit,Food,synthetic
+Starbucks,NEFT-STARBUCKS-221303078625,debit,Food,synthetic
+Starbucks,STARBUCKS TXN 277407982489 PUNE,debit,Food,synthetic
+Starbucks,POS STARBUCKS PUNE 667844191316,debit,Food,synthetic
+Cafe Coffee Day,POS CAFE COFFEE DAY MUMBAI 261060383508,debit,Food,synthetic
+Cafe Coffee Day,UPI/DR/215261406506/CAFE COFFEE DAY/icici,debit,Food,synthetic
+Cafe Coffee Day,NEFT-CAFE COFFEE DAY-78872487443,debit,Food,synthetic
+Burger King,BURGER KING TXN 791283349866 BENGALURU,debit,Food,synthetic
+Burger King,NEFT-BURGER KING-156584781401,debit,Food,synthetic
+Burger King,UPI/DR/489931111452/BURGER KING/icici,debit,Food,synthetic
+KFC,POS KFC MUMBAI 838029822893,debit,Food,synthetic
+KFC,NEFT-KFC-940332511549,debit,Food,synthetic
+KFC,KFC PAYMENT REF 789213914868,debit,Food,synthetic
+Haldirams,HALDIRAMS TXN 549564880931 CHENNAI,debit,Food,synthetic
+Haldirams,UPI/DR/636837967556/HALDIRAMS/icici,debit,Food,synthetic
+Haldirams,POS HALDIRAMS HYDERABAD 392008014836,debit,Food,synthetic
+Behrouz Biryani,UPI/DR/212721809024/BEHROUZ BIRYANI/okhdfcbank,debit,Food,synthetic
+Behrouz Biryani,BEHROUZ BIRYANI PAYMENT REF 123644048763,debit,Food,synthetic
+Behrouz Biryani,POS BEHROUZ BIRYANI CHENNAI 469448406160,debit,Food,synthetic
+Faasos,UPI/DR/486207208512/FAASOS/paytm,debit,Food,synthetic
+Faasos,FAASOS TXN 576923597603 MUMBAI,debit,Food,synthetic
+Faasos,UPI-FAASOS-344588423397@ybl,debit,Food,synthetic
+Barbeque Nation,BARBEQUE NATION PAYMENT REF 520426486665,debit,Food,synthetic
+Barbeque Nation,BARBEQUE NATION TXN 919485764457 BENGALURU,debit,Food,synthetic
+Barbeque Nation,UPI-BARBEQUE NATION-367445254362@okhdfcbank,debit,Food,synthetic
+Chai Point,UPI/DR/736397412766/CHAI POINT/okhdfcbank,debit,Food,synthetic
+Chai Point,CHAI POINT TXN 38790594941 CHENNAI,debit,Food,synthetic
+Chai Point,NEFT-CHAI POINT-813423463863,debit,Food,synthetic
+BigBasket,NEFT-BIGBASKET-647069817202,debit,Food,synthetic
+BigBasket,POS BIGBASKET DELHI 270607601610,debit,Food,synthetic
+BigBasket,BIGBASKET PAYMENT REF 226176066120,debit,Food,synthetic
+Blinkit,NEFT-BLINKIT-505219001023,debit,Food,synthetic
+Blinkit,UPI-BLINKIT-51500854163@axl,debit,Food,synthetic
+Blinkit,BLINKIT PAYMENT REF 854209599745,debit,Food,synthetic
+Zepto,NEFT-ZEPTO-66854159064,debit,Food,synthetic
+Zepto,ZEPTO TXN 160502150907 BENGALURU,debit,Food,synthetic
+Zepto,UPI/DR/904526076819/ZEPTO/okhdfcbank,debit,Food,synthetic
+DMart,DMART PAYMENT REF 36609271301,debit,Food,synthetic
+DMart,DMART TXN 396565029901 PUNE,debit,Food,synthetic
+DMart,NEFT-DMART-965586247624,debit,Food,synthetic
+Reliance Fresh,UPI-RELIANCE FRESH-55991344253@paytm,debit,Food,synthetic
+Reliance Fresh,RELIANCE FRESH PAYMENT REF 979792542250,debit,Food,synthetic
+Reliance Fresh,UPI/DR/989382079865/RELIANCE FRESH/ybl,debit,Food,synthetic
+Licious,LICIOUS TXN 79905646669 DELHI,debit,Food,synthetic
+Licious,POS LICIOUS BENGALURU 906386773202,debit,Food,synthetic
+Licious,UPI-LICIOUS-261783433374@icici,debit,Food,synthetic
+Pizza Hut,UPI/DR/432958927024/PIZZA HUT/axl,debit,Food,synthetic
+Pizza Hut,NEFT-PIZZA HUT-605901714865,debit,Food,synthetic
+Pizza Hut,POS PIZZA HUT DELHI 153958048697,debit,Food,synthetic
+Amazon Pay India,UPI/DR/329760309367/AMAZON PAY INDIA/paytm,debit,Shopping,synthetic
+Amazon Pay India,NEFT-AMAZON PAY INDIA-58435207577,debit,Shopping,synthetic
+Amazon Pay India,AMAZON PAY INDIA PAYMENT REF 17007062680,debit,Shopping,synthetic
+Flipkart,FLIPKART TXN 370365587924 PUNE,debit,Shopping,synthetic
+Flipkart,FLIPKART PAYMENT REF 684589311087,debit,Shopping,synthetic
+Flipkart,UPI-FLIPKART-321837608696@ybl,debit,Shopping,synthetic
+Myntra,UPI-MYNTRA-430480154894@oksbi,debit,Shopping,synthetic
+Myntra,MYNTRA PAYMENT REF 165358782481,debit,Shopping,synthetic
+Myntra,NEFT-MYNTRA-2292457979,debit,Shopping,synthetic
+Ajio,UPI/DR/247238860864/AJIO/okhdfcbank,debit,Shopping,synthetic
+Ajio,AJIO PAYMENT REF 174586020300,debit,Shopping,synthetic
+Ajio,AJIO TXN 169626657953 CHENNAI,debit,Shopping,synthetic
+Nykaa,UPI/DR/416607952566/NYKAA/icici,debit,Shopping,synthetic
+Nykaa,NEFT-NYKAA-210729259214,debit,Shopping,synthetic
+Nykaa,POS NYKAA CHENNAI 39249761060,debit,Shopping,synthetic
+Decathlon,POS DECATHLON DELHI 645268748580,debit,Shopping,synthetic
+Decathlon,DECATHLON TXN 972009070432 CHENNAI,debit,Shopping,synthetic
+Decathlon,UPI-DECATHLON-797808293827@ybl,debit,Shopping,synthetic
+IKEA,IKEA TXN 589235856165 HYDERABAD,debit,Shopping,synthetic
+IKEA,NEFT-IKEA-328033468529,debit,Shopping,synthetic
+IKEA,UPI-IKEA-59627777809@icici,debit,Shopping,synthetic
+Lifestyle Stores,NEFT-LIFESTYLE STORES-24564257991,debit,Shopping,synthetic
+Lifestyle Stores,LIFESTYLE STORES PAYMENT REF 345643928372,debit,Shopping,synthetic
+Lifestyle Stores,POS LIFESTYLE STORES DELHI 628106415723,debit,Shopping,synthetic
+Meesho,MEESHO TXN 772052365950 MUMBAI,debit,Shopping,synthetic
+Meesho,POS MEESHO BENGALURU 563271629115,debit,Shopping,synthetic
+Meesho,UPI-MEESHO-405158104173@okhdfcbank,debit,Shopping,synthetic
+Croma,CROMA PAYMENT REF 253204077088,debit,Shopping,synthetic
+Croma,POS CROMA HYDERABAD 102321326521,debit,Shopping,synthetic
+Croma,CROMA TXN 139012454113 MUMBAI,debit,Shopping,synthetic
+Reliance Digital,UPI/DR/707722974658/RELIANCE DIGITAL/okhdfcbank,debit,Shopping,synthetic
+Reliance Digital,UPI-RELIANCE DIGITAL-562504020428@ybl,debit,Shopping,synthetic
+Reliance Digital,RELIANCE DIGITAL TXN 395605852524 CHENNAI,debit,Shopping,synthetic
+Pantaloons,UPI/DR/490021186449/PANTALOONS/axl,debit,Shopping,synthetic
+Pantaloons,NEFT-PANTALOONS-419064624597,debit,Shopping,synthetic
+Pantaloons,PANTALOONS TXN 228258113231 DELHI,debit,Shopping,synthetic
+Westside,NEFT-WESTSIDE-528274861225,debit,Shopping,synthetic
+Westside,UPI/DR/30138582848/WESTSIDE/icici,debit,Shopping,synthetic
+Westside,UPI-WESTSIDE-453644617278@oksbi,debit,Shopping,synthetic
+Tata Cliq,TATA CLIQ TXN 238298751906 MUMBAI,debit,Shopping,synthetic
+Tata Cliq,UPI-TATA CLIQ-359768847608@paytm,debit,Shopping,synthetic
+Tata Cliq,UPI/DR/474338652505/TATA CLIQ/axl,debit,Shopping,synthetic
+Shoppers Stop,UPI-SHOPPERS STOP-124478717446@icici,debit,Shopping,synthetic
+Shoppers Stop,POS SHOPPERS STOP PUNE 78120010709,debit,Shopping,synthetic
+Shoppers Stop,SHOPPERS STOP TXN 235625186576 MUMBAI,debit,Shopping,synthetic
+Max Fashion,UPI-MAX FASHION-61341208044@okhdfcbank,debit,Shopping,synthetic
+Max Fashion,POS MAX FASHION HYDERABAD 198068135097,debit,Shopping,synthetic
+Max Fashion,UPI/DR/771557576949/MAX FASHION/ybl,debit,Shopping,synthetic
+FirstCry,UPI/DR/383484159674/FIRSTCRY/axl,debit,Shopping,synthetic
+FirstCry,POS FIRSTCRY HYDERABAD 900876482025,debit,Shopping,synthetic
+FirstCry,UPI-FIRSTCRY-100532581452@icici,debit,Shopping,synthetic
+Lenskart,LENSKART PAYMENT REF 289813778418,debit,Shopping,synthetic
+Lenskart,NEFT-LENSKART-609662660174,debit,Shopping,synthetic
+Lenskart,LENSKART TXN 818247142282 MUMBAI,debit,Shopping,synthetic
+MakeMyTrip,UPI-MAKEMYTRIP-941799852555@ybl,debit,Travel,synthetic
+MakeMyTrip,MAKEMYTRIP TXN 886405624113 CHENNAI,debit,Travel,synthetic
+MakeMyTrip,POS MAKEMYTRIP PUNE 109685849671,debit,Travel,synthetic
+Goibibo,NEFT-GOIBIBO-774291284538,debit,Travel,synthetic
+Goibibo,UPI/DR/153128171613/GOIBIBO/icici,debit,Travel,synthetic
+Goibibo,UPI-GOIBIBO-525988219854@paytm,debit,Travel,synthetic
+IRCTC,UPI-IRCTC-765883188460@ybl,debit,Travel,synthetic
+IRCTC,IRCTC TXN 15806970626 MUMBAI,debit,Travel,synthetic
+IRCTC,NEFT-IRCTC-4033030932,debit,Travel,synthetic
+IndiGo Airlines,POS INDIGO AIRLINES BENGALURU 469800100742,debit,Travel,synthetic
+IndiGo Airlines,INDIGO AIRLINES TXN 397669804806 DELHI,debit,Travel,synthetic
+IndiGo Airlines,INDIGO AIRLINES PAYMENT REF 214660586684,debit,Travel,synthetic
+Air India,AIR INDIA TXN 471857103415 CHENNAI,debit,Travel,synthetic
+Air India,POS AIR INDIA PUNE 848965053170,debit,Travel,synthetic
+Air India,UPI/DR/608352407820/AIR INDIA/okhdfcbank,debit,Travel,synthetic
+Vistara,UPI/DR/870293246718/VISTARA/oksbi,debit,Travel,synthetic
+Vistara,NEFT-VISTARA-473067472238,debit,Travel,synthetic
+Vistara,UPI-VISTARA-611230611913@okhdfcbank,debit,Travel,synthetic
+OYO Rooms,POS OYO ROOMS BENGALURU 511169157431,debit,Travel,synthetic
+OYO Rooms,UPI/DR/939606711704/OYO ROOMS/axl,debit,Travel,synthetic
+OYO Rooms,UPI-OYO ROOMS-818986572614@okhdfcbank,debit,Travel,synthetic
+Airbnb,UPI-AIRBNB-263108470631@oksbi,debit,Travel,synthetic
+Airbnb,UPI/DR/299495093864/AIRBNB/oksbi,debit,Travel,synthetic
+Airbnb,POS AIRBNB HYDERABAD 386579821741,debit,Travel,synthetic
+Cleartrip,NEFT-CLEARTRIP-848997510117,debit,Travel,synthetic
+Cleartrip,CLEARTRIP TXN 627008932486 BENGALURU,debit,Travel,synthetic
+Cleartrip,POS CLEARTRIP HYDERABAD 445059953406,debit,Travel,synthetic
+RedBus,REDBUS TXN 40533532599 HYDERABAD,debit,Travel,synthetic
+RedBus,POS REDBUS HYDERABAD 490697634903,debit,Travel,synthetic
+RedBus,NEFT-REDBUS-673957827666,debit,Travel,synthetic
+Taj Hotels,UPI/DR/542535434956/TAJ HOTELS/oksbi,debit,Travel,synthetic
+Taj Hotels,POS TAJ HOTELS CHENNAI 493327037476,debit,Travel,synthetic
+Taj Hotels,NEFT-TAJ HOTELS-759114468404,debit,Travel,synthetic
+Yatra,UPI-YATRA-796598040205@ybl,debit,Travel,synthetic
+Yatra,NEFT-YATRA-771603299616,debit,Travel,synthetic
+Yatra,POS YATRA PUNE 526985103202,debit,Travel,synthetic
+AbhiBus,UPI-ABHIBUS-884607633125@oksbi,debit,Travel,synthetic
+AbhiBus,POS ABHIBUS MUMBAI 168347678362,debit,Travel,synthetic
+AbhiBus,ABHIBUS PAYMENT REF 906351990743,debit,Travel,synthetic
+Thomas Cook,POS THOMAS COOK PUNE 186949844992,debit,Travel,synthetic
+Thomas Cook,UPI/DR/215582341886/THOMAS COOK/icici,debit,Travel,synthetic
+Thomas Cook,UPI-THOMAS COOK-662433336958@icici,debit,Travel,synthetic
+Uber India,UPI-UBER INDIA-791551396289@axl,debit,Transport,synthetic
+Uber India,NEFT-UBER INDIA-578190721645,debit,Transport,synthetic
+Uber India,UBER INDIA TXN 620299962259 HYDERABAD,debit,Transport,synthetic
+Ola Cabs,UPI-OLA CABS-498736304491@icici,debit,Transport,synthetic
+Ola Cabs,NEFT-OLA CABS-491239153981,debit,Transport,synthetic
+Ola Cabs,POS OLA CABS MUMBAI 845546472393,debit,Transport,synthetic
+Rapido,POS RAPIDO CHENNAI 793437988179,debit,Transport,synthetic
+Rapido,UPI/DR/189172533668/RAPIDO/oksbi,debit,Transport,synthetic
+Rapido,UPI-RAPIDO-269064724812@paytm,debit,Transport,synthetic
+HP Petrol Pump,NEFT-HP PETROL PUMP-489613722925,debit,Transport,synthetic
+HP Petrol Pump,UPI-HP PETROL PUMP-738502025699@okhdfcbank,debit,Transport,synthetic
+HP Petrol Pump,UPI/DR/791361386883/HP PETROL PUMP/oksbi,debit,Transport,synthetic
+Indian Oil,UPI/DR/862837466086/INDIAN OIL/axl,debit,Transport,synthetic
+Indian Oil,INDIAN OIL PAYMENT REF 363592096788,debit,Transport,synthetic
+Indian Oil,UPI-INDIAN OIL-761286407757@oksbi,debit,Transport,synthetic
+Bharat Petroleum,UPI-BHARAT PETROLEUM-365551456356@oksbi,debit,Transport,synthetic
+Bharat Petroleum,POS BHARAT PETROLEUM BENGALURU 929016203485,debit,Transport,synthetic
+Bharat Petroleum,BHARAT PETROLEUM TXN 404457055486 CHENNAI,debit,Transport,synthetic
+FASTag Recharge,FASTAG RECHARGE TXN 631842109295 CHENNAI,debit,Transport,synthetic
+FASTag Recharge,POS FASTAG RECHARGE CHENNAI 4069210890,debit,Transport,synthetic
+FASTag Recharge,NEFT-FASTAG RECHARGE-21256953002,debit,Transport,synthetic
+Delhi Metro,UPI/DR/451488915426/DELHI METRO/oksbi,debit,Transport,synthetic
+Delhi Metro,DELHI METRO PAYMENT REF 231190184828,debit,Transport,synthetic
+Delhi Metro,UPI-DELHI METRO-628574695989@okhdfcbank,debit,Transport,synthetic
+BMTC Bus Pass,NEFT-BMTC BUS PASS-545116847095,debit,Transport,synthetic
+BMTC Bus Pass,UPI/DR/738927162523/BMTC BUS PASS/oksbi,debit,Transport,synthetic
+BMTC Bus Pass,BMTC BUS PASS PAYMENT REF 213587444745,debit,Transport,synthetic
+Namma Metro,UPI/DR/82805488822/NAMMA METRO/paytm,debit,Transport,synthetic
+Namma Metro,NEFT-NAMMA METRO-219934191422,debit,Transport,synthetic
+Namma Metro,NAMMA METRO PAYMENT REF 55473724193,debit,Transport,synthetic
+Shell Petrol,UPI-SHELL PETROL-706277110747@ybl,debit,Transport,synthetic
+Shell Petrol,NEFT-SHELL PETROL-759564426541,debit,Transport,synthetic
+Shell Petrol,SHELL PETROL PAYMENT REF 331758379954,debit,Transport,synthetic
+Parking Fee,PARKING FEE TXN 877336680926 HYDERABAD,debit,Transport,synthetic
+Parking Fee,POS PARKING FEE BENGALURU 820409632316,debit,Transport,synthetic
+Parking Fee,PARKING FEE PAYMENT REF 468773322235,debit,Transport,synthetic
+Yulu Bikes,NEFT-YULU BIKES-182048297377,debit,Transport,synthetic
+Yulu Bikes,UPI-YULU BIKES-273230457425@paytm,debit,Transport,synthetic
+Yulu Bikes,YULU BIKES PAYMENT REF 527198295897,debit,Transport,synthetic
+Mumbai Local Pass,UPI-MUMBAI LOCAL PASS-271822656015@okhdfcbank,debit,Transport,synthetic
+Mumbai Local Pass,MUMBAI LOCAL PASS PAYMENT REF 874408804961,debit,Transport,synthetic
+Mumbai Local Pass,POS MUMBAI LOCAL PASS DELHI 571550652519,debit,Transport,synthetic
+Airtel Postpaid,UPI-AIRTEL POSTPAID-73675364215@axl,debit,Bills,synthetic
+Airtel Postpaid,AIRTEL POSTPAID TXN 266135860770 BENGALURU,debit,Bills,synthetic
+Airtel Postpaid,POS AIRTEL POSTPAID PUNE 960567511043,debit,Bills,synthetic
+Jio Recharge,JIO RECHARGE PAYMENT REF 761486085273,debit,Bills,synthetic
+Jio Recharge,JIO RECHARGE TXN 252897607752 BENGALURU,debit,Bills,synthetic
+Jio Recharge,UPI/DR/982322750607/JIO RECHARGE/okhdfcbank,debit,Bills,synthetic
+Vodafone Idea,UPI-VODAFONE IDEA-238656456503@okhdfcbank,debit,Bills,synthetic
+Vodafone Idea,POS VODAFONE IDEA MUMBAI 381772115610,debit,Bills,synthetic
+Vodafone Idea,VODAFONE IDEA TXN 650354860553 DELHI,debit,Bills,synthetic
+BESCOM Electricity,UPI-BESCOM ELECTRICITY-456112808931@oksbi,debit,Bills,synthetic
+BESCOM Electricity,BESCOM ELECTRICITY TXN 428012851231 BENGALURU,debit,Bills,synthetic
+BESCOM Electricity,BESCOM ELECTRICITY PAYMENT REF 625344759733,debit,Bills,synthetic
+Tata Power,POS TATA POWER PUNE 760271798561,debit,Bills,synthetic
+Tata Power,TATA POWER PAYMENT REF 76360078735,debit,Bills,synthetic
+Tata Power,UPI/DR/928324797526/TATA POWER/ybl,debit,Bills,synthetic
+Adani Gas,ADANI GAS TXN 368758663095 PUNE,debit,Bills,synthetic
+Adani Gas,UPI/DR/974152363246/ADANI GAS/oksbi,debit,Bills,synthetic
+Adani Gas,UPI-ADANI GAS-428420310481@okhdfcbank,debit,Bills,synthetic
+BSNL Broadband,BSNL BROADBAND TXN 695980622912 BENGALURU,debit,Bills,synthetic
+BSNL Broadband,POS BSNL BROADBAND BENGALURU 789585360792,debit,Bills,synthetic
+BSNL Broadband,NEFT-BSNL BROADBAND-935877590518,debit,Bills,synthetic
+ACT Fibernet,NEFT-ACT FIBERNET-621206698315,debit,Bills,synthetic
+ACT Fibernet,ACT FIBERNET TXN 767431917704 BENGALURU,debit,Bills,synthetic
+ACT Fibernet,POS ACT FIBERNET DELHI 908812685503,debit,Bills,synthetic
+Water Board,NEFT-WATER BOARD-749933376249,debit,Bills,synthetic
+Water Board,WATER BOARD PAYMENT REF 955930821849,debit,Bills,synthetic
+Water Board,POS WATER BOARD MUMBAI 344785649450,debit,Bills,synthetic
+MSEB Bill,POS MSEB BILL BENGALURU 648948733464,debit,Bills,synthetic
+MSEB Bill,MSEB BILL PAYMENT REF 97541703756,debit,Bills,synthetic
+MSEB Bill,UPI/DR/509437730506/MSEB BILL/oksbi,debit,Bills,synthetic
+Dish TV,NEFT-DISH TV-288538423883,debit,Bills,synthetic
+Dish TV,UPI-DISH TV-77420025135@ybl,debit,Bills,synthetic
+Dish TV,UPI/DR/456725941848/DISH TV/okhdfcbank,debit,Bills,synthetic
+Tata Play,POS TATA PLAY BENGALURU 778240615001,debit,Bills,synthetic
+Tata Play,NEFT-TATA PLAY-870909717881,debit,Bills,synthetic
+Tata Play,TATA PLAY TXN 130192813961 CHENNAI,debit,Bills,synthetic
+LIC Premium,UPI/DR/70981717441/LIC PREMIUM/icici,debit,Bills,synthetic
+LIC Premium,NEFT-LIC PREMIUM-281509875438,debit,Bills,synthetic
+LIC Premium,UPI-LIC PREMIUM-80899263026@oksbi,debit,Bills,synthetic
+HDFC Life Insurance,HDFC LIFE INSURANCE PAYMENT REF 548029854450,debit,Bills,synthetic
+HDFC Life Insurance,NEFT-HDFC LIFE INSURANCE-959893239774,debit,Bills,synthetic
+HDFC Life Insurance,POS HDFC LIFE INSURANCE DELHI 460202879029,debit,Bills,synthetic
+Credit Card Bill Payment,CREDIT CARD BILL PAYMENT PAYMENT REF 609304645176,debit,Bills,synthetic
+Credit Card Bill Payment,NEFT-CREDIT CARD BILL PAYMENT-230738480528,debit,Bills,synthetic
+Credit Card Bill Payment,POS CREDIT CARD BILL PAYMENT DELHI 906619767719,debit,Bills,synthetic
+HDFC Loan EMI,NEFT-HDFC LOAN EMI-625435049156,debit,Bills,synthetic
+HDFC Loan EMI,UPI/DR/528257147191/HDFC LOAN EMI/oksbi,debit,Bills,synthetic
+HDFC Loan EMI,POS HDFC LOAN EMI DELHI 825676537826,debit,Bills,synthetic
+Bajaj Finance EMI,BAJAJ FINANCE EMI PAYMENT REF 467511036904,debit,Bills,synthetic
+Bajaj Finance EMI,BAJAJ FINANCE EMI TXN 336235538083 MUMBAI,debit,Bills,synthetic
+Bajaj Finance EMI,UPI-BAJAJ FINANCE EMI-862863322909@icici,debit,Bills,synthetic
+Netflix,UPI-NETFLIX-138524615920@oksbi,debit,Entertainment,synthetic
+Netflix,UPI/DR/232775147657/NETFLIX/ybl,debit,Entertainment,synthetic
+Netflix,NEFT-NETFLIX-202436969697,debit,Entertainment,synthetic
+Spotify,POS SPOTIFY HYDERABAD 804320229658,debit,Entertainment,synthetic
+Spotify,SPOTIFY PAYMENT REF 489299706901,debit,Entertainment,synthetic
+Spotify,UPI/DR/256073742146/SPOTIFY/ybl,debit,Entertainment,synthetic
+Amazon Prime Video,NEFT-AMAZON PRIME VIDEO-205103419163,debit,Entertainment,synthetic
+Amazon Prime Video,AMAZON PRIME VIDEO PAYMENT REF 31512356492,debit,Entertainment,synthetic
+Amazon Prime Video,AMAZON PRIME VIDEO TXN 578868296511 BENGALURU,debit,Entertainment,synthetic
+Disney Hotstar,DISNEY HOTSTAR PAYMENT REF 698160124157,debit,Entertainment,synthetic
+Disney Hotstar,POS DISNEY HOTSTAR MUMBAI 393489762562,debit,Entertainment,synthetic
+Disney Hotstar,DISNEY HOTSTAR TXN 616396153979 DELHI,debit,Entertainment,synthetic
+BookMyShow,BOOKMYSHOW PAYMENT REF 955238892814,debit,Entertainment,synthetic
+BookMyShow,UPI-BOOKMYSHOW-588972625411@okhdfcbank,debit,Entertainment,synthetic
+BookMyShow,NEFT-BOOKMYSHOW-514758682240,debit,Entertainment,synthetic
+PVR Cinemas,PVR CINEMAS PAYMENT REF 684145603426,debit,Entertainment,synthetic
+PVR Cinemas,UPI-PVR CINEMAS-744339342274@paytm,debit,Entertainment,synthetic
+PVR Cinemas,UPI/DR/516818957807/PVR CINEMAS/icici,debit,Entertainment,synthetic
+INOX Movies,UPI/DR/29305556496/INOX MOVIES/axl,debit,Entertainment,synthetic
+INOX Movies,INOX MOVIES PAYMENT REF 985956595660,debit,Entertainment,synthetic
+INOX Movies,INOX MOVIES TXN 319575804273 DELHI,debit,Entertainment,synthetic
+SonyLIV,SONYLIV PAYMENT REF 445671544702,debit,Entertainment,synthetic
+SonyLIV,NEFT-SONYLIV-185955488826,debit,Entertainment,synthetic
+SonyLIV,UPI/DR/572193523876/SONYLIV/oksbi,debit,Entertainment,synthetic
+YouTube Premium,YOUTUBE PREMIUM TXN 357677992429 HYDERABAD,debit,Entertainment,synthetic
+YouTube Premium,UPI/DR/878629108841/YOUTUBE PREMIUM/ybl,debit,Entertainment,synthetic
+YouTube Premium,POS YOUTUBE PREMIUM HYDERABAD 982663959979,debit,Entertainment,synthetic
+Steam Games,UPI/DR/621677320321/STEAM GAMES/paytm,debit,Entertainment,synthetic
+Steam Games,NEFT-STEAM GAMES-10485348567,debit,Entertainment,synthetic
+Steam Games,STEAM GAMES PAYMENT REF 463757448640,debit,Entertainment,synthetic
+PlayStation Store,NEFT-PLAYSTATION STORE-930924896233,debit,Entertainment,synthetic
+PlayStation Store,POS PLAYSTATION STORE MUMBAI 454484892655,debit,Entertainment,synthetic
+PlayStation Store,PLAYSTATION STORE PAYMENT REF 925812442216,debit,Entertainment,synthetic
+Zee5,UPI-ZEE5-192943939788@icici,debit,Entertainment,synthetic
+Zee5,ZEE5 TXN 962468515145 MUMBAI,debit,Entertainment,synthetic
+Zee5,NEFT-ZEE5-634201444202,debit,Entertainment,synthetic
+Gaana Plus,POS GAANA PLUS HYDERABAD 452168607415,debit,Entertainment,synthetic
+Gaana Plus,UPI/DR/798636879637/GAANA PLUS/okhdfcbank,debit,Entertainment,synthetic
+Gaana Plus,UPI-GAANA PLUS-728048385884@axl,debit,Entertainment,synthetic
+Apple Music,POS APPLE MUSIC HYDERABAD 455484351106,debit,Entertainment,synthetic
+Apple Music,NEFT-APPLE MUSIC-301061788245,debit,Entertainment,synthetic
+Apple Music,UPI-APPLE MUSIC-394697596404@icici,debit,Entertainment,synthetic
+Apollo Pharmacy,APOLLO PHARMACY TXN 349903804277 DELHI,debit,Healthcare,synthetic
+Apollo Pharmacy,NEFT-APOLLO PHARMACY-769313975495,debit,Healthcare,synthetic
+Apollo Pharmacy,UPI/DR/826765263581/APOLLO PHARMACY/okhdfcbank,debit,Healthcare,synthetic
+MedPlus,NEFT-MEDPLUS-376948339855,debit,Healthcare,synthetic
+MedPlus,POS MEDPLUS PUNE 958937442503,debit,Healthcare,synthetic
+MedPlus,MEDPLUS PAYMENT REF 412467273920,debit,Healthcare,synthetic
+1mg,UPI/DR/130041902388/1MG/ybl,debit,Healthcare,synthetic
+1mg,UPI-1MG-767873128047@oksbi,debit,Healthcare,synthetic
+1mg,NEFT-1MG-942600997726,debit,Healthcare,synthetic
+PharmEasy,PHARMEASY TXN 595538694004 BENGALURU,debit,Healthcare,synthetic
+PharmEasy,NEFT-PHARMEASY-937428896985,debit,Healthcare,synthetic
+PharmEasy,UPI-PHARMEASY-547928204931@icici,debit,Healthcare,synthetic
+Fortis Hospital,UPI/DR/138235049400/FORTIS HOSPITAL/axl,debit,Healthcare,synthetic
+Fortis Hospital,FORTIS HOSPITAL PAYMENT REF 646015242867,debit,Healthcare,synthetic
+Fortis Hospital,FORTIS HOSPITAL TXN 896752627156 MUMBAI,debit,Healthcare,synthetic
+Max Hospital,POS MAX HOSPITAL CHENNAI 551843381228,debit,Healthcare,synthetic
+Max Hospital,MAX HOSPITAL TXN 548679855843 DELHI,debit,Healthcare,synthetic
+Max Hospital,UPI/DR/491747759945/MAX HOSPITAL/axl,debit,Healthcare,synthetic
+Dr Lal PathLabs,DR LAL PATHLABS PAYMENT REF 263246358823,debit,Healthcare,synthetic
+Dr Lal PathLabs,UPI-DR LAL PATHLABS-739857184044@axl,debit,Healthcare,synthetic
+Dr Lal PathLabs,DR LAL PATHLABS TXN 973126083796 BENGALURU,debit,Healthcare,synthetic
+Thyrocare,UPI/DR/53762832262/THYROCARE/ybl,debit,Healthcare,synthetic
+Thyrocare,THYROCARE TXN 48989032346 MUMBAI,debit,Healthcare,synthetic
+Thyrocare,UPI-THYROCARE-745466631899@ybl,debit,Healthcare,synthetic
+Netmeds,NETMEDS TXN 239690668909 DELHI,debit,Healthcare,synthetic
+Netmeds,UPI-NETMEDS-178875407810@axl,debit,Healthcare,synthetic
+Netmeds,NEFT-NETMEDS-388826566752,debit,Healthcare,synthetic
+City Clinic Consultation,NEFT-CITY CLINIC CONSULTATION-972223547102,debit,Healthcare,synthetic
+City Clinic Consultation,UPI-CITY CLINIC CONSULTATION-102579753251@ybl,debit,Healthcare,synthetic
+City Clinic Consultation,UPI/DR/405628551252/CITY CLINIC CONSULTATION/icici,debit,Healthcare,synthetic
+Smile Dental Care,NEFT-SMILE DENTAL CARE-711129424026,debit,Healthcare,synthetic
+Smile Dental Care,SMILE DENTAL CARE PAYMENT REF 381708709757,debit,Healthcare,synthetic
+Smile Dental Care,POS SMILE DENTAL CARE HYDERABAD 119856528387,debit,Healthcare,synthetic
+Practo,UPI-PRACTO-516018963087@axl,debit,Healthcare,synthetic
+Practo,PRACTO PAYMENT REF 822510159100,debit,Healthcare,synthetic
+Practo,PRACTO TXN 267357008503 BENGALURU,debit,Healthcare,synthetic
+Manipal Hospital,NEFT-MANIPAL HOSPITAL-330449945234,debit,Healthcare,synthetic
+Manipal Hospital,MANIPAL HOSPITAL TXN 806354746991 DELHI,debit,Healthcare,synthetic
+Manipal Hospital,UPI/DR/166176958099/MANIPAL HOSPITAL/paytm,debit,Healthcare,synthetic
+Eye Care Centre,EYE CARE CENTRE PAYMENT REF 975832305055,debit,Healthcare,synthetic
+Eye Care Centre,UPI/DR/139288916947/EYE CARE CENTRE/icici,debit,Healthcare,synthetic
+Eye Care Centre,POS EYE CARE CENTRE BENGALURU 558065338190,debit,Healthcare,synthetic
+Byjus,BYJUS PAYMENT REF 821154819164,debit,Education,synthetic
+Byjus,UPI/DR/926515771178/BYJUS/paytm,debit,Education,synthetic
+Byjus,POS BYJUS PUNE 331445281998,debit,Education,synthetic
+Unacademy,NEFT-UNACADEMY-912835133866,debit,Education,synthetic
+Unacademy,UPI/DR/84028433132/UNACADEMY/paytm,debit,Education,synthetic
+Unacademy,UNACADEMY TXN 611561221056 CHENNAI,debit,Education,synthetic
+Coursera,UPI/DR/963960492825/COURSERA/axl,debit,Education,synthetic
+Coursera,UPI-COURSERA-161587993907@paytm,debit,Education,synthetic
+Coursera,NEFT-COURSERA-918921889989,debit,Education,synthetic
+Udemy,NEFT-UDEMY-400385293286,debit,Education,synthetic
+Udemy,UPI-UDEMY-586178592309@okhdfcbank,debit,Education,synthetic
+Udemy,UDEMY TXN 560465836635 BENGALURU,debit,Education,synthetic
+School Fees,SCHOOL FEES TXN 621142223045 DELHI,debit,Education,synthetic
+School Fees,POS SCHOOL FEES CHENNAI 532849637916,debit,Education,synthetic
+School Fees,UPI/DR/795377979694/SCHOOL FEES/axl,debit,Education,synthetic
+College Tuition Fee,NEFT-COLLEGE TUITION FEE-890675831064,debit,Education,synthetic
+College Tuition Fee,COLLEGE TUITION FEE PAYMENT REF 591846417017,debit,Education,synthetic
+College Tuition Fee,POS COLLEGE TUITION FEE CHENNAI 555799940737,debit,Education,synthetic
+Vedantu,VEDANTU PAYMENT REF 343108116786,debit,Education,synthetic
+Vedantu,VEDANTU TXN 565681117558 MUMBAI,debit,Education,synthetic
+Vedantu,UPI/DR/55967106492/VEDANTU/axl,debit,Education,synthetic
+Exam Registration Fee,UPI-EXAM REGISTRATION FEE-140205982750@paytm,debit,Education,synthetic
+Exam Registration Fee,NEFT-EXAM REGISTRATION FEE-347829200861,debit,Education,synthetic
+Exam Registration Fee,EXAM REGISTRATION FEE PAYMENT REF 557242152102,debit,Education,synthetic
+Coaching Centre,COACHING CENTRE TXN 715200613211 CHENNAI,debit,Education,synthetic
+Coaching Centre,UPI-COACHING CENTRE-485960840200@icici,debit,Education,synthetic
+Coaching Centre,NEFT-COACHING CENTRE-485680920757,debit,Education,synthetic
+Kendriya Vidyalaya,UPI/DR/667479139112/KENDRIYA VIDYALAYA/ybl,debit,Education,synthetic
+Kendriya Vidyalaya,KENDRIYA VIDYALAYA TXN 180093994388 MUMBAI,debit,Education,synthetic
+Kendriya Vidyalaya,UPI-KENDRIYA VIDYALAYA-186272633805@icici,debit,Education,synthetic
+UpGrad,UPI-UPGRAD-497372198873@icici,debit,Education,synthetic
+UpGrad,POS UPGRAD MUMBAI 419157210203,debit,Education,synthetic
+UpGrad,UPGRAD TXN 432197938084 MUMBAI,debit,Education,synthetic
+Simplilearn,SIMPLILEARN TXN 709108878512 HYDERABAD,debit,Education,synthetic
+Simplilearn,NEFT-SIMPLILEARN-175539749226,debit,Education,synthetic
+Simplilearn,SIMPLILEARN PAYMENT REF 489261587701,debit,Education,synthetic
+Crossword Book Store,NEFT-CROSSWORD BOOK STORE-225304346950,debit,Education,synthetic
+Crossword Book Store,UPI/DR/99218366652/CROSSWORD BOOK STORE/ybl,debit,Education,synthetic
+Crossword Book Store,POS CROSSWORD BOOK STORE CHENNAI 42806220500,debit,Education,synthetic
+University Admission,UPI/DR/233237164473/UNIVERSITY ADMISSION/axl,debit,Education,synthetic
+University Admission,UNIVERSITY ADMISSION TXN 658230189568 CHENNAI,debit,Education,synthetic
+University Admission,UPI-UNIVERSITY ADMISSION-595324444886@icici,debit,Education,synthetic
+Rent To Landlord,UPI/DR/363362663363/RENT TO LANDLORD/oksbi,debit,Rent,synthetic
+Rent To Landlord,NEFT-RENT TO LANDLORD-665403316160,debit,Rent,synthetic
+Rent To Landlord,RENT TO LANDLORD TXN 884898787348 HYDERABAD,debit,Rent,synthetic
+House Rent,UPI-HOUSE RENT-339736431456@axl,debit,Rent,synthetic
+House Rent,HOUSE RENT TXN 421000859565 BENGALURU,debit,Rent,synthetic
+House Rent,UPI/DR/717074277528/HOUSE RENT/paytm,debit,Rent,synthetic
+PG Rent,NEFT-PG RENT-971397441233,debit,Rent,synthetic
+PG Rent,UPI/DR/565072887151/PG RENT/axl,debit,Rent,synthetic
+PG Rent,UPI-PG RENT-982030081185@axl,debit,Rent,synthetic
+NoBroker Rent,UPI/DR/989872739191/NOBROKER RENT/axl,debit,Rent,synthetic
+NoBroker Rent,UPI-NOBROKER RENT-378847834981@icici,debit,Rent,synthetic
+NoBroker Rent,NOBROKER RENT PAYMENT REF 538640646629,debit,Rent,synthetic
+Flat Rent Payment,UPI/DR/172189658216/FLAT RENT PAYMENT/paytm,debit,Rent,synthetic
+Flat Rent Payment,FLAT RENT PAYMENT PAYMENT REF 512200015195,debit,Rent,synthetic
+Flat Rent Payment,POS FLAT RENT PAYMENT CHENNAI 356177184339,debit,Rent,synthetic
+Society Maintenance,POS SOCIETY MAINTENANCE HYDERABAD 822481037409,debit,Rent,synthetic
+Society Maintenance,UPI/DR/649207445876/SOCIETY MAINTENANCE/oksbi,debit,Rent,synthetic
+Society Maintenance,SOCIETY MAINTENANCE TXN 660399749660 PUNE,debit,Rent,synthetic
+CRED Rent Pay,CRED RENT PAY TXN 849684486806 CHENNAI,debit,Rent,synthetic
+CRED Rent Pay,POS CRED RENT PAY DELHI 532430606635,debit,Rent,synthetic
+CRED Rent Pay,CRED RENT PAY PAYMENT REF 893612156826,debit,Rent,synthetic
+RentoMojo,UPI-RENTOMOJO-571644677575@icici,debit,Rent,synthetic
+RentoMojo,RENTOMOJO TXN 489156922771 HYDERABAD,debit,Rent,synthetic
+RentoMojo,NEFT-RENTOMOJO-496523020732,debit,Rent,synthetic
+Room Rent,UPI-ROOM RENT-106557129340@oksbi,debit,Rent,synthetic
+Room Rent,POS ROOM RENT MUMBAI 261714661052,debit,Rent,synthetic
+Room Rent,UPI/DR/3199002314/ROOM RENT/icici,debit,Rent,synthetic
+Lease Payment,LEASE PAYMENT PAYMENT REF 466346811550,debit,Rent,synthetic
+Lease Payment,UPI/DR/784424596115/LEASE PAYMENT/okhdfcbank,debit,Rent,synthetic
+Lease Payment,UPI-LEASE PAYMENT-750501727609@okhdfcbank,debit,Rent,synthetic
+Office Rent,POS OFFICE RENT HYDERABAD 712779835494,debit,Rent,synthetic
+Office Rent,UPI/DR/606653067259/OFFICE RENT/okhdfcbank,debit,Rent,synthetic
+Office Rent,UPI-OFFICE RENT-398732824794@ybl,debit,Rent,synthetic
+Housing Society Dues,NEFT-HOUSING SOCIETY DUES-142541317013,debit,Rent,synthetic
+Housing Society Dues,UPI/DR/726049714541/HOUSING SOCIETY DUES/axl,debit,Rent,synthetic
+Housing Society Dues,POS HOUSING SOCIETY DUES CHENNAI 154886589321,debit,Rent,synthetic
+Salary ACME Corp,POS SALARY ACME CORP CHENNAI 243247880804,credit,Salary,synthetic
+Salary ACME Corp,SALARY ACME CORP TXN 462069276850 DELHI,credit,Salary,synthetic
+Salary ACME Corp,SALARY ACME CORP PAYMENT REF 855785055338,credit,Salary,synthetic
+NEFT CR Salary,POS NEFT CR SALARY CHENNAI 931558997086,credit,Salary,synthetic
+NEFT CR Salary,NEFT CR SALARY TXN 173425345280 HYDERABAD,credit,Salary,synthetic
+NEFT CR Salary,NEFT CR SALARY PAYMENT REF 393799373239,credit,Salary,synthetic
+Payroll Infosys,POS PAYROLL INFOSYS HYDERABAD 303054196668,credit,Salary,synthetic
+Payroll Infosys,PAYROLL INFOSYS TXN 768209548235 HYDERABAD,credit,Salary,synthetic
+Payroll Infosys,PAYROLL INFOSYS PAYMENT REF 1233719438,credit,Salary,synthetic
+Salary For October,SALARY FOR OCTOBER TXN 984167970136 MUMBAI,credit,Salary,synthetic
+Salary For October,POS SALARY FOR OCTOBER BENGALURU 170864120981,credit,Salary,synthetic
+Salary For October,SALARY FOR OCTOBER PAYMENT REF 118254164985,credit,Salary,synthetic
+Stipend,POS STIPEND DELHI 615905221086,credit,Salary,synthetic
+Stipend,UPI-STIPEND-805883370680@icici,credit,Salary,synthetic
+Stipend,UPI/DR/989024513882/STIPEND/oksbi,credit,Salary,synthetic
+Monthly Salary TCS,UPI-MONTHLY SALARY TCS-398976569315@axl,credit,Salary,synthetic
+Monthly Salary TCS,NEFT-MONTHLY SALARY TCS-287500916384,credit,Salary,synthetic
+Monthly Salary TCS,UPI/DR/65512578762/MONTHLY SALARY TCS/axl,credit,Salary,synthetic
+Sal Credit Wipro,NEFT-SAL CREDIT WIPRO-322901634284,credit,Salary,synthetic
+Sal Credit Wipro,SAL CREDIT WIPRO PAYMENT REF 456838674893,credit,Salary,synthetic
+Sal Credit Wipro,UPI/DR/58118773504/SAL CREDIT WIPRO/oksbi,credit,Salary,synthetic
+Bonus Payout,POS BONUS PAYOUT DELHI 348906303118,credit,Salary,synthetic
+Bonus Payout,UPI-BONUS PAYOUT-526685505395@icici,credit,Salary,synthetic
+Bonus Payout,BONUS PAYOUT PAYMENT REF 746082940295,credit,Salary,synthetic
+Salary HCL Technologies,POS SALARY HCL TECHNOLOGIES BENGALURU 486210969302,credit,Salary,synthetic
+Salary HCL Technologies,UPI-SALARY HCL TECHNOLOGIES-842835637328@oksbi,credit,Salary,synthetic
+Salary HCL Technologies,UPI/DR/485947725724/SALARY HCL TECHNOLOGIES/ybl,credit,Salary,synthetic
+Wages Credit,POS WAGES CREDIT DELHI 847873886836,credit,Salary,synthetic
+Wages Credit,WAGES CREDIT TXN 804923176666 DELHI,credit,Salary,synthetic
+Wages Credit,UPI-WAGES CREDIT-247252954262@oksbi,credit,Salary,synthetic
+Incentive Payout,POS INCENTIVE PAYOUT PUNE 321261729210,credit,Salary,synthetic
+Incentive Payout,UPI-INCENTIVE PAYOUT-185510350309@oksbi,credit,Salary,synthetic
+Incentive Payout,NEFT-INCENTIVE PAYOUT-999785928275,credit,Salary,synthetic
+Payroll Accenture,PAYROLL ACCENTURE TXN 605841699304 MUMBAI,credit,Salary,synthetic
+Payroll Accenture,PAYROLL ACCENTURE PAYMENT REF 567767782294,credit,Salary,synthetic
+Payroll Accenture,NEFT-PAYROLL ACCENTURE-392181542492,credit,Salary,synthetic
+Zerodha,ZERODHA PAYMENT REF 637128733530,debit,Investment,synthetic
+Zerodha,ZERODHA TXN 261212838992 HYDERABAD,debit,Investment,synthetic
+Zerodha,UPI/DR/460307977995/ZERODHA/axl,debit,Investment,synthetic
+Groww,UPI-GROWW-986197644478@okhdfcbank,debit,Investment,synthetic
+Groww,GROWW PAYMENT REF 905057395247,debit,Investment,synthetic
+Groww,NEFT-GROWW-646143672852,debit,Investment,synthetic
+Mutual Fund SIP HDFC,POS MUTUAL FUND SIP HDFC HYDERABAD 880683399635,debit,Investment,synthetic
+Mutual Fund SIP HDFC,UPI-MUTUAL FUND SIP HDFC-113288227849@icici,debit,Investment,synthetic
+Mutual Fund SIP HDFC,MUTUAL FUND SIP HDFC TXN 687498476379 DELHI,debit,Investment,synthetic
+Upstox,POS UPSTOX BENGALURU 768083929124,debit,Investment,synthetic
+Upstox,NEFT-UPSTOX-846373515597,debit,Investment,synthetic
+Upstox,UPI/DR/343503661392/UPSTOX/ybl,debit,Investment,synthetic
+PPF Deposit,UPI-PPF DEPOSIT-733644286886@icici,debit,Investment,synthetic
+PPF Deposit,NEFT-PPF DEPOSIT-330969166972,debit,Investment,synthetic
+PPF Deposit,POS PPF DEPOSIT HYDERABAD 66722665117,debit,Investment,synthetic
+NPS Contribution,NPS CONTRIBUTION PAYMENT REF 470784397198,debit,Investment,synthetic
+NPS Contribution,NEFT-NPS CONTRIBUTION-904467095748,debit,Investment,synthetic
+NPS Contribution,UPI-NPS CONTRIBUTION-174949854108@okhdfcbank,debit,Investment,synthetic
+SIP Nippon India,UPI-SIP NIPPON INDIA-66386513705@icici,debit,Investment,synthetic
+SIP Nippon India,POS SIP NIPPON INDIA MUMBAI 258170653669,debit,Investment,synthetic
+SIP Nippon India,NEFT-SIP NIPPON INDIA-244888235354,debit,Investment,synthetic
+Coin By Zerodha,COIN BY ZERODHA TXN 614731530146 CHENNAI,debit,Investment,synthetic
+Coin By Zerodha,NEFT-COIN BY ZERODHA-875256075862,debit,Investment,synthetic
+Coin By Zerodha,COIN BY ZERODHA PAYMENT REF 197102181756,debit,Investment,synthetic
+Smallcase,NEFT-SMALLCASE-366052470687,debit,Investment,synthetic
+Smallcase,POS SMALLCASE PUNE 601790562586,debit,Investment,synthetic
+Smallcase,SMALLCASE PAYMENT REF 75127437043,debit,Investment,synthetic
+Kuvera,KUVERA TXN 402471703591 CHENNAI,debit,Investment,synthetic
+Kuvera,UPI-KUVERA-816848062583@ybl,debit,Investment,synthetic
+Kuvera,POS KUVERA PUNE 392604383742,debit,Investment,synthetic
+Gold ETF Purchase,UPI/DR/765030108366/GOLD ETF PURCHASE/okhdfcbank,debit,Investment,synthetic
+Gold ETF Purchase,GOLD ETF PURCHASE PAYMENT REF 667002045407,debit,Investment,synthetic
+Gold ETF Purchase,UPI-GOLD ETF PURCHASE-189036221755@oksbi,debit,Investment,synthetic
+FD Opening,UPI-FD OPENING-32661280607@okhdfcbank,debit,Investment,synthetic
+FD Opening,FD OPENING PAYMENT REF 71221735849,debit,Investment,synthetic
+FD Opening,FD OPENING TXN 488309587134 DELHI,debit,Investment,synthetic
+RD Instalment,RD INSTALMENT PAYMENT REF 523970448280,debit,Investment,synthetic
+RD Instalment,RD INSTALMENT TXN 874412531292 DELHI,debit,Investment,synthetic
+RD Instalment,POS RD INSTALMENT MUMBAI 240596596806,debit,Investment,synthetic
+Sovereign Gold Bond,SOVEREIGN GOLD BOND TXN 93195330424 CHENNAI,debit,Investment,synthetic
+Sovereign Gold Bond,POS SOVEREIGN GOLD BOND HYDERABAD 363555565547,debit,Investment,synthetic
+Sovereign Gold Bond,UPI/DR/398977511375/SOVEREIGN GOLD BOND/paytm,debit,Investment,synthetic
+UPI To Rahul Sharma,POS UPI TO RAHUL SHARMA HYDERABAD 828950441212,debit,Transfer,synthetic
+UPI To Rahul Sharma,NEFT-UPI TO RAHUL SHARMA-541733943306,debit,Transfer,synthetic
+UPI To Rahul Sharma,UPI TO RAHUL SHARMA TXN 370364396202 PUNE,debit,Transfer,synthetic
+NEFT To Priya Singh,POS NEFT TO PRIYA SINGH DELHI 571831456535,debit,Transfer,synthetic
+NEFT To Priya Singh,UPI-NEFT TO PRIYA SINGH-635565757945@okhdfcbank,debit,Transfer,synthetic
+NEFT To Priya Singh,NEFT TO PRIYA SINGH PAYMENT REF 919754964111,debit,Transfer,synthetic
+IMPS Transfer To Self,POS IMPS TRANSFER TO SELF CHENNAI 567419999047,debit,Transfer,synthetic
+IMPS Transfer To Self,UPI/DR/689041524754/IMPS TRANSFER TO SELF/oksbi,debit,Transfer,synthetic
+IMPS Transfer To Self,UPI-IMPS TRANSFER TO SELF-563449545209@ybl,debit,Transfer,synthetic
+Fund Transfer To Savings,FUND TRANSFER TO SAVINGS TXN 698006507338 HYDERABAD,debit,Transfer,synthetic
+Fund Transfer To Savings,NEFT-FUND TRANSFER TO SAVINGS-171678777506,debit,Transfer,synthetic
+Fund Transfer To Savings,POS FUND TRANSFER TO SAVINGS HYDERABAD 67641869322,debit,Transfer,synthetic
+RTGS To Mehta Traders,POS RTGS TO MEHTA TRADERS BENGALURU 627244208239,debit,Transfer,synthetic
+RTGS To Mehta Traders,UPI-RTGS TO MEHTA TRADERS-285852238882@paytm,debit,Transfer,synthetic
+RTGS To Mehta Traders,NEFT-RTGS TO MEHTA TRADERS-882224800598,debit,Transfer,synthetic
+UPI Amit Kumar,UPI AMIT KUMAR TXN 103444499287 HYDERABAD,debit,Transfer,synthetic
+UPI Amit Kumar,NEFT-UPI AMIT KUMAR-375042048117,debit,Transfer,synthetic
+UPI Amit Kumar,UPI-UPI AMIT KUMAR-180526864278@oksbi,debit,Transfer,synthetic
+Sent To Friend,UPI/DR/223822100014/SENT TO FRIEND/oksbi,debit,Transfer,synthetic
+Sent To Friend,SENT TO FRIEND PAYMENT REF 113188362698,debit,Transfer,synthetic
+Sent To Friend,POS SENT TO FRIEND MUMBAI 750843050627,debit,Transfer,synthetic
+Transfer To Own Account,TRANSFER TO OWN ACCOUNT PAYMENT REF 612971128830,debit,Transfer,synthetic
+Transfer To Own Account,TRANSFER TO OWN ACCOUNT TXN 991138838657 HYDERABAD,debit,Transfer,synthetic
+Transfer To Own Account,NEFT-TRANSFER TO OWN ACCOUNT-309212556428,debit,Transfer,synthetic
+UPI To Suresh,NEFT-UPI TO SURESH-499798653363,debit,Transfer,synthetic
+UPI To Suresh,POS UPI TO SURESH CHENNAI 65040892621,debit,Transfer,synthetic
+UPI To Suresh,UPI/DR/582873391437/UPI TO SURESH/axl,debit,Transfer,synthetic
+Self Transfer,SELF TRANSFER TXN 931592446670 HYDERABAD,debit,Transfer,synthetic
+Self Transfer,SELF TRANSFER PAYMENT REF 588246505912,debit,Transfer,synthetic
+Self Transfer,NEFT-SELF TRANSFER-645115647214,debit,Transfer,synthetic
+Sent To Mom,NEFT-SENT TO MOM-334558622726,debit,Transfer,synthetic
+Sent To Mom,SENT TO MOM TXN 692342552898 CHENNAI,debit,Transfer,synthetic
+Sent To Mom,UPI/DR/816563376370/SENT TO MOM/oksbi,debit,Transfer,synthetic
+IMPS To Neha Verma,IMPS TO NEHA VERMA TXN 621404034338 PUNE,debit,Transfer,synthetic
+IMPS To Neha Verma,UPI-IMPS TO NEHA VERMA-901508920576@okhdfcbank,debit,Transfer,synthetic
+IMPS To Neha Verma,UPI/DR/914388903419/IMPS TO NEHA VERMA/oksbi,debit,Transfer,synthetic
+ATM Cash Withdrawal,POS ATM CASH WITHDRAWAL BENGALURU 109318370175,debit,Other,synthetic
+ATM Cash Withdrawal,ATM CASH WITHDRAWAL TXN 994110135096 MUMBAI,debit,Other,synthetic
+ATM Cash Withdrawal,ATM CASH WITHDRAWAL PAYMENT REF 694616606810,debit,Other,synthetic
+Bank Charges,UPI-BANK CHARGES-385043291263@icici,debit,Other,synthetic
+Bank Charges,POS BANK CHARGES DELHI 510434794717,debit,Other,synthetic
+Bank Charges,UPI/DR/993582168693/BANK CHARGES/icici,debit,Other,synthetic
+SMS Alert Charges,POS SMS ALERT CHARGES CHENNAI 789726493692,debit,Other,synthetic
+SMS Alert Charges,SMS ALERT CHARGES TXN 53697689080 CHENNAI,debit,Other,synthetic
+SMS Alert Charges,UPI-SMS ALERT CHARGES-964561581475@ybl,debit,Other,synthetic
+Annual Card Fee,NEFT-ANNUAL CARD FEE-995131936290,debit,Other,synthetic
+Annual Card Fee,ANNUAL CARD FEE TXN 815717473908 HYDERABAD,debit,Other,synthetic
+Annual Card Fee,UPI/DR/174872122007/ANNUAL CARD FEE/icici,debit,Other,synthetic
+GST Charges,POS GST CHARGES DELHI 720805011570,debit,Other,synthetic
+GST Charges,UPI-GST CHARGES-161356470892@okhdfcbank,debit,Other,synthetic
+GST Charges,NEFT-GST CHARGES-366227758751,debit,Other,synthetic
+Misc Payment,NEFT-MISC PAYMENT-191514822234,debit,Other,synthetic
+Misc Payment,POS MISC PAYMENT HYDERABAD 976659897538,debit,Other,synthetic
+Misc Payment,MISC PAYMENT PAYMENT REF 16860044465,debit,Other,synthetic
+POS Purchase,POS PURCHASE PAYMENT REF 15767974807,debit,Other,synthetic
+POS Purchase,NEFT-POS PURCHASE-964048183187,debit,Other,synthetic
+POS Purchase,POS POS PURCHASE HYDERABAD 475786138548,debit,Other,synthetic
+Cheque Bounce Charges,UPI/DR/671087003039/CHEQUE BOUNCE CHARGES/icici,debit,Other,synthetic
+Cheque Bounce Charges,NEFT-CHEQUE BOUNCE CHARGES-932561861659,debit,Other,synthetic
+Cheque Bounce Charges,POS CHEQUE BOUNCE CHARGES MUMBAI 662782611553,debit,Other,synthetic
+Service Charge,UPI/DR/896816670947/SERVICE CHARGE/oksbi,debit,Other,synthetic
+Service Charge,POS SERVICE CHARGE CHENNAI 277245039266,debit,Other,synthetic
+Service Charge,SERVICE CHARGE TXN 728536590108 BENGALURU,debit,Other,synthetic
+Penalty Fee,NEFT-PENALTY FEE-235709827205,debit,Other,synthetic
+Penalty Fee,PENALTY FEE PAYMENT REF 139018666288,debit,Other,synthetic
+Penalty Fee,UPI/DR/970803915804/PENALTY FEE/icici,debit,Other,synthetic
+Debit Card Replacement,DEBIT CARD REPLACEMENT PAYMENT REF 140816929544,debit,Other,synthetic
+Debit Card Replacement,DEBIT CARD REPLACEMENT TXN 310194991279 MUMBAI,debit,Other,synthetic
+Debit Card Replacement,NEFT-DEBIT CARD REPLACEMENT-605897774189,debit,Other,synthetic
+Unknown Merchant,UPI-UNKNOWN MERCHANT-284822757792@paytm,debit,Other,synthetic
+Unknown Merchant,UPI/DR/578196702291/UNKNOWN MERCHANT/axl,debit,Other,synthetic
+Unknown Merchant,UNKNOWN MERCHANT TXN 235332569869 BENGALURU,debit,Other,synthetic
+UPI From Rahul Sharma,POS UPI FROM RAHUL SHARMA HYDERABAD 163821804636,credit,Transfer,synthetic
+UPI From Rahul Sharma,NEFT-UPI FROM RAHUL SHARMA-645750085429,credit,Transfer,synthetic
+UPI From Rahul Sharma,UPI/DR/326792274803/UPI FROM RAHUL SHARMA/oksbi,credit,Transfer,synthetic
+NEFT From Priya Singh,NEFT FROM PRIYA SINGH PAYMENT REF 100751047241,credit,Transfer,synthetic
+NEFT From Priya Singh,NEFT-NEFT FROM PRIYA SINGH-308799689687,credit,Transfer,synthetic
+NEFT From Priya Singh,POS NEFT FROM PRIYA SINGH HYDERABAD 518586777373,credit,Transfer,synthetic
+Received From Friend,RECEIVED FROM FRIEND TXN 903788766835 DELHI,credit,Transfer,synthetic
+Received From Friend,POS RECEIVED FROM FRIEND MUMBAI 64617144220,credit,Transfer,synthetic
+Received From Friend,RECEIVED FROM FRIEND PAYMENT REF 774231561134,credit,Transfer,synthetic
+UPI From Suresh,UPI-UPI FROM SURESH-604202389433@axl,credit,Transfer,synthetic
+UPI From Suresh,NEFT-UPI FROM SURESH-449282468475,credit,Transfer,synthetic
+UPI From Suresh,UPI/DR/720940425021/UPI FROM SURESH/ybl,credit,Transfer,synthetic
+Transfer From Savings,TRANSFER FROM SAVINGS PAYMENT REF 883373781941,credit,Transfer,synthetic
+Transfer From Savings,UPI/DR/793643328917/TRANSFER FROM SAVINGS/ybl,credit,Transfer,synthetic
+Transfer From Savings,UPI-TRANSFER FROM SAVINGS-470356343877@oksbi,credit,Transfer,synthetic
+IMPS From Neha Verma,POS IMPS FROM NEHA VERMA HYDERABAD 198210644082,credit,Transfer,synthetic
+IMPS From Neha Verma,IMPS FROM NEHA VERMA PAYMENT REF 574183760173,credit,Transfer,synthetic
+IMPS From Neha Verma,IMPS FROM NEHA VERMA TXN 444279991621 DELHI,credit,Transfer,synthetic
+Dividend Credit Reliance,POS DIVIDEND CREDIT RELIANCE BENGALURU 718142245038,credit,Investment,synthetic
+Dividend Credit Reliance,UPI/DR/41422895695/DIVIDEND CREDIT RELIANCE/oksbi,credit,Investment,synthetic
+Dividend Credit Reliance,UPI-DIVIDEND CREDIT RELIANCE-150379355058@axl,credit,Investment,synthetic
+Mutual Fund Redemption,UPI-MUTUAL FUND REDEMPTION-237795327056@ybl,credit,Investment,synthetic
+Mutual Fund Redemption,MUTUAL FUND REDEMPTION PAYMENT REF 779408140084,credit,Investment,synthetic
+Mutual Fund Redemption,NEFT-MUTUAL FUND REDEMPTION-231888049995,credit,Investment,synthetic
+FD Maturity Credit,FD MATURITY CREDIT TXN 651541637497 CHENNAI,credit,Investment,synthetic
+FD Maturity Credit,UPI-FD MATURITY CREDIT-454803425174@icici,credit,Investment,synthetic
+FD Maturity Credit,FD MATURITY CREDIT PAYMENT REF 478449865448,credit,Investment,synthetic
+Interest On FD,POS INTEREST ON FD DELHI 661975711517,credit,Investment,synthetic
+Interest On FD,NEFT-INTEREST ON FD-271022071008,credit,Investment,synthetic
+Interest On FD,UPI/DR/452548135117/INTEREST ON FD/paytm,credit,Investment,synthetic
+Zerodha Payout,NEFT-ZERODHA PAYOUT-958276856008,credit,Investment,synthetic
+Zerodha Payout,UPI/DR/872053873469/ZERODHA PAYOUT/oksbi,credit,Investment,synthetic
+Zerodha Payout,UPI-ZERODHA PAYOUT-124034129033@ybl,credit,Investment,synthetic
+Cashback Credit,UPI/DR/901997716185/CASHBACK CREDIT/icici,credit,Other,synthetic
+Cashback Credit,CASHBACK CREDIT PAYMENT REF 699530855755,credit,Other,synthetic
+Cashback Credit,CASHBACK CREDIT TXN 935043939039 CHENNAI,credit,Other,synthetic
+Refund From Merchant,REFUND FROM MERCHANT TXN 855944558034 DELHI,credit,Other,synthetic
+Refund From Merchant,REFUND FROM MERCHANT PAYMENT REF 721277897186,credit,Other,synthetic
+Refund From Merchant,NEFT-REFUND FROM MERCHANT-584849911105,credit,Other,synthetic
+Reversal Credit,NEFT-REVERSAL CREDIT-853738025642,credit,Other,synthetic
+Reversal Credit,UPI-REVERSAL CREDIT-833947005820@oksbi,credit,Other,synthetic
+Reversal Credit,POS REVERSAL CREDIT DELHI 121365761187,credit,Other,synthetic
+Interest Credit Savings,NEFT-INTEREST CREDIT SAVINGS-974090821288,credit,Other,synthetic
+Interest Credit Savings,UPI/DR/51289177415/INTEREST CREDIT SAVINGS/ybl,credit,Other,synthetic
+Interest Credit Savings,INTEREST CREDIT SAVINGS PAYMENT REF 963130958367,credit,Other,synthetic
+Refund Amazon,UPI-REFUND AMAZON-602003725572@okhdfcbank,credit,Other,synthetic
+Refund Amazon,REFUND AMAZON TXN 188490608080 MUMBAI,credit,Other,synthetic
+Refund Amazon,NEFT-REFUND AMAZON-462321197910,credit,Other,synthetic
