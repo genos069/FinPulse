@@ -70,13 +70,13 @@ class DocumentControllerTest {
 
     private static DocumentResponse response() {
         return new DocumentResponse("doc-1", "s.pdf", "application/pdf", PDF.length,
-                DocumentStatus.UPLOADED, Instant.now(), Instant.now());
+                DocumentStatus.UPLOADED, Instant.now(), Instant.now(), null);
     }
 
     @Test
     void upload_returns201AndUsesPrincipalNotRequestSuppliedUserId() throws Exception {
         MockMultipartFile file = new MockMultipartFile("file", "s.pdf", "application/pdf", PDF);
-        when(documentService.upload(eq(USER_ID), any(MultipartFile.class))).thenReturn(response());
+        when(documentService.upload(eq(USER_ID), any(MultipartFile.class))).thenReturn(response().withJobId("job-1"));
 
         mockMvc.perform(multipart("/api/documents").file(file)
                         .param("userId", "attacker-999")
@@ -84,6 +84,7 @@ class DocumentControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "/api/documents/doc-1"))
                 .andExpect(jsonPath("$.id").value("doc-1"))
+                .andExpect(jsonPath("$.jobId").value("job-1"))
                 .andExpect(jsonPath("$.userId").doesNotExist())
                 .andExpect(jsonPath("$.gridFsFileId").doesNotExist());
 
