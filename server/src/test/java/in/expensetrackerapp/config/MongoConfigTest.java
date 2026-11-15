@@ -34,10 +34,34 @@ class MongoConfigTest {
         }
 
         assertThat(properties.getProperty("spring.mongodb.uri"))
-                .isEqualTo("${MONGODB_URI:mongodb://localhost:27017/expensetrackerdb}");
+                .isEqualTo("${MONGODB_URI:mongodb://localhost:27017/finpulse}");
         assertThat(properties.getProperty("spring.data.mongodb.uri"))
                 .as("Deprecated spring.data.mongodb.uri must not be used in Spring Boot 4.x")
                 .isNull();
+    }
+
+    @Test
+    void applicationPropertiesShouldDefaultDatabaseAndGridFsBucket() throws Exception {
+        Properties properties = new Properties();
+        try (Reader reader = Files.newBufferedReader(Paths.get("src/main/resources/application.properties"))) {
+            properties.load(reader);
+        }
+
+        assertThat(properties.getProperty("spring.mongodb.database")).isEqualTo("${MONGODB_DATABASE:finpulse}");
+        assertThat(properties.getProperty("application.gridfs.bucket")).isEqualTo("${GRIDFS_BUCKET:fs}");
+    }
+
+    @Test
+    void shouldUseExplicitDatabasePropertyWhenUriHasNoDatabasePath() {
+        contextRunner
+                .withPropertyValues(
+                        "spring.mongodb.uri=mongodb://localhost:27017",
+                        "spring.mongodb.database=finpulse")
+                .run(context -> {
+                    assertThat(context).hasNotFailed();
+                    MongoDatabaseFactory databaseFactory = context.getBean(MongoDatabaseFactory.class);
+                    assertThat(databaseFactory.getMongoDatabase().getName()).isEqualTo("finpulse");
+                });
     }
 
     @Test
