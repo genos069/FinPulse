@@ -10,6 +10,8 @@ import in.expensetrackerapp.document.model.DocumentStatus;
 import in.expensetrackerapp.document.model.DocumentType;
 import in.expensetrackerapp.document.model.UploadedDocument;
 import in.expensetrackerapp.document.repository.DocumentRepository;
+import in.expensetrackerapp.job.model.ProcessingJob;
+import in.expensetrackerapp.job.service.JobService;
 import org.bson.types.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,14 +42,17 @@ public class DocumentService {
 
     private final DocumentRepository documentRepository;
     private final GridFsStorageService storageService;
+    private final JobService jobService;
     private final long maxFileSizeBytes;
 
     public DocumentService(
             DocumentRepository documentRepository,
             GridFsStorageService storageService,
+            JobService jobService,
             @Value("${spring.servlet.multipart.max-file-size:10MB}") String maxFileSize) {
         this.documentRepository = documentRepository;
         this.storageService = storageService;
+        this.jobService = jobService;
         this.maxFileSizeBytes = DataSize.parse(maxFileSize).toBytes();
     }
 
@@ -64,6 +69,7 @@ public class DocumentService {
         String documentId = new ObjectId().toHexString();
         String storedFilename = UUID.randomUUID() + "." + type.getExtension();
         String gridFsFileId = null;
+        boolean metadataInserted = false;
         try {
             MessageDigest digest = newSha256();
             try (InputStream in = new DigestInputStream(file.getInputStream(), digest)) {
@@ -86,15 +92,29 @@ public class DocumentService {
 
             // insert() (not save()) so an id collision fails instead of silently overwriting.
             UploadedDocument saved = documentRepository.insert(doc);
-            return DocumentResponse.fromDocument(saved);
+            metadataInserted = true;
+
+            ProcessingJob job = jobService.createJob(userId, saved.getId(), gridFsFileId);
+            return DocumentResponse.fromDocument(saved).withJobId(job.getId());
         } catch (IOException e) {
-            storageService.deleteQuietly(gridFsFileId);
+            rollbackUpload(documentId, metadataInserted, gridFsFileId);
             throw new BadRequestException("Could not read the uploaded file");
         } catch (RuntimeException e) {
-            // Never leave an orphaned GridFS file behind when metadata persistence fails.
-            storageService.deleteQuietly(gridFsFileId);
+            // Never leave an orphaned GridFS file or a job-less document behind.
+            rollbackUpload(documentId, metadataInserted, gridFsFileId);
             throw e;
         }
+    }
+
+    private void rollbackUpload(String documentId, boolean metadataInserted, String gridFsFileId) {
+        if (metadataInserted) {
+            try {
+                documentRepository.deleteById(documentId);
+            } catch (RuntimeException e) {
+                log.error("Failed to roll back document metadata {}: {}", documentId, e.getMessage());
+            }
+        }
+        storageService.deleteQuietly(gridFsFileId);
     }
 
     public List<DocumentResponse> list(String userId, int page, int size) {

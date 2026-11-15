@@ -9,6 +9,8 @@ import in.expensetrackerapp.document.dto.DocumentResponse;
 import in.expensetrackerapp.document.model.DocumentStatus;
 import in.expensetrackerapp.document.model.UploadedDocument;
 import in.expensetrackerapp.document.repository.DocumentRepository;
+import in.expensetrackerapp.job.model.ProcessingJob;
+import in.expensetrackerapp.job.service.JobService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -56,11 +58,14 @@ class DocumentServiceTest {
     @Mock
     private GridFsStorageService storage;
 
+    @Mock
+    private JobService jobService;
+
     private DocumentService service;
 
     @BeforeEach
     void setUp() {
-        service = new DocumentService(repository, storage, "1KB");
+        service = new DocumentService(repository, storage, jobService, "1KB");
     }
 
     private void stubSuccessfulStorageAndInsert() {
@@ -70,6 +75,9 @@ class DocumentServiceTest {
                     return GRIDFS_ID;
                 });
         when(repository.insert(any(UploadedDocument.class))).thenAnswer(inv -> inv.getArgument(0));
+        ProcessingJob job = new ProcessingJob();
+        job.setId("job-1");
+        when(jobService.createJob(anyString(), anyString(), anyString())).thenReturn(job);
     }
 
     @Test
@@ -84,6 +92,7 @@ class DocumentServiceTest {
         assertThat(response.originalFilename()).isEqualTo("evil statement.pdf");
         assertThat(response.sizeBytes()).isEqualTo(PDF.length);
         assertThat(response.id()).isNotBlank();
+        assertThat(response.jobId()).isEqualTo("job-1");
 
         ArgumentCaptor<UploadedDocument> captor = ArgumentCaptor.forClass(UploadedDocument.class);
         verify(repository).insert(captor.capture());
@@ -96,6 +105,7 @@ class DocumentServiceTest {
         assertThat(saved.getUpdatedAt()).isNotNull();
         verify(storage).store(any(InputStream.class), eq(saved.getStoredFilename()), eq("application/pdf"),
                 eq("user-1"), eq(saved.getId()));
+        verify(jobService).createJob("user-1", saved.getId(), GRIDFS_ID);
     }
 
     @Test
@@ -190,6 +200,25 @@ class DocumentServiceTest {
     }
 
     @Test
+    void upload_rollsBackMetadataAndGridFsFileWhenJobCreationFails() {
+        when(storage.store(any(InputStream.class), anyString(), anyString(), anyString(), anyString()))
+                .thenAnswer(inv -> {
+                    ((InputStream) inv.getArgument(0)).readAllBytes();
+                    return GRIDFS_ID;
+                });
+        when(repository.insert(any(UploadedDocument.class))).thenAnswer(inv -> inv.getArgument(0));
+        when(jobService.createJob(anyString(), anyString(), anyString())).thenThrow(new IllegalStateException("job db down"));
+        MockMultipartFile file = new MockMultipartFile("file", "s.pdf", "application/pdf", PDF);
+
+        assertThatThrownBy(() -> service.upload("user-1", file)).isInstanceOf(IllegalStateException.class);
+
+        ArgumentCaptor<UploadedDocument> inserted = ArgumentCaptor.forClass(UploadedDocument.class);
+        verify(repository).insert(inserted.capture());
+        verify(repository).deleteById(inserted.getValue().getId());
+        verify(storage).deleteQuietly(GRIDFS_ID);
+    }
+
+    @Test
     void upload_doesNotPersistMetadataWhenGridFsStoreFails() {
         when(storage.store(any(InputStream.class), anyString(), anyString(), anyString(), anyString()))
                 .thenThrow(new IllegalStateException("gridfs down"));
@@ -197,6 +226,7 @@ class DocumentServiceTest {
 
         assertThatThrownBy(() -> service.upload("user-1", file)).isInstanceOf(IllegalStateException.class);
         verify(repository, never()).insert(any(UploadedDocument.class));
+        verifyNoInteractions(jobService);
     }
 
     @Test
