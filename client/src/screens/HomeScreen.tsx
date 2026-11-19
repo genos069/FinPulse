@@ -31,12 +31,32 @@ import { TransactionRow } from "../components/TransactionRow";
 import { inr, compact, percent } from "../utils/format";
 import { dateLabel, isoDate, monthKey } from "../utils/date";
 import { categoryIcons } from "../constants/catalog";
+import { useAuth } from "../store/AuthProvider";
+import { getDashboardSummary, type DashboardSummary } from "../services/dashboard";
+import { useEffect, useState } from "react";
 
 export function HomeScreen() {
   const { state } = useApp(),
+    auth = useAuth(),
     c = useTheme(),
     nav = useNav(),
     m = selectMetrics(state);
+  const [summary, setSummary] = useState<DashboardSummary | null>(null);
+  const [dashboardError, setDashboardError] = useState<string | null>(null);
+  const [dashboardLoading, setDashboardLoading] = useState(false);
+  useEffect(() => {
+    let active = true;
+    if (!auth.session || auth.demo || auth.local) { setSummary(null); return; }
+    setDashboardLoading(true);
+    getDashboardSummary(auth.session.accessToken, monthKey())
+      .then((data) => { if (active) { setSummary(data); setDashboardError(null); } })
+      .catch((error) => { if (active) setDashboardError(error instanceof Error ? error.message : "Could not load dashboard data."); })
+      .finally(() => { if (active) setDashboardLoading(false); });
+    return () => { active = false; };
+  }, [auth.session?.accessToken, auth.demo, auth.local]);
+  const serverCategories = summary?.categoryExpenses ?? [];
+  const displayIncome = summary?.currentMonthIncome ?? m.income;
+  const displayExpenses = summary?.currentMonthExpenses ?? m.expenses;
   const recent = [...state.transactions]
     .sort((a, b) => b.date.localeCompare(a.date))
     .slice(0, 5);
@@ -48,10 +68,10 @@ export function HomeScreen() {
       .filter((t) => t.date === d && t.type === "expense")
       .reduce((s, t) => s + t.amount, 0),
   );
-  const categories = Object.entries(m.byCategory)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 3);
-  const first = state.profile.name.split(" ")[0],
+  const categories = summary
+    ? serverCategories.slice().sort((a, b) => b.total - a.total).slice(0, 3).map((item) => [item.category, item.total] as [string, number])
+    : Object.entries(m.byCategory).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  const first = (auth.session?.user.name ?? state.profile.name).split(" ")[0],
     hour = new Date().getHours();
   return (
     <Screen
@@ -84,6 +104,11 @@ export function HomeScreen() {
         </IconButton>
       }
     >
+      {dashboardError ? <Note>{dashboardError} Showing locally saved data for now.</Note> : null}
+      {dashboardLoading ? <T size={11} muted>Refreshing your account summary…</T> : null}
+      {summary && (summary.pendingReviewCount > 0 || summary.excludedTransferCount > 0 || summary.otherCurrencyCount > 0) ? (
+        <Note>{summary.pendingReviewCount} transactions need review · {summary.excludedTransferCount} transfers excluded · {summary.otherCurrencyCount} entries use another currency.</Note>
+      ) : null}
       {state.demo ? (
         <T size={10} muted style={{ letterSpacing: 1.5, marginBottom: 10 }}>
           DEMO PROFILE · SAMPLE DATA
@@ -219,7 +244,7 @@ export function HomeScreen() {
       />
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}>
         {[
-          { label: "💰 Savings", value: compact(m.savings) },
+          { label: "💰 Net cash flow", value: compact(summary?.currentMonthNetCashFlow ?? m.savings) },
           { label: "📈 Investments", value: compact(m.portfolio) },
           { label: "💳 Card outstanding", value: compact(m.cardDebt) },
           {
@@ -274,7 +299,7 @@ export function HomeScreen() {
                   {inr(amount)}
                 </T>
               </Row>
-              <Progress value={percent(amount, m.expenses)} />
+              <Progress value={percent(amount, displayExpenses)} />
             </View>
           ))
         ) : (
@@ -326,7 +351,20 @@ export function HomeScreen() {
       </Card>
       <Section title="Recent transactions" />
       <Card>
-        {recent.length ? (
+        {summary ? (summary.recentTransactions.length ? summary.recentTransactions.slice(0, 5).map((t) => (
+          <View key={t.id} style={{ paddingVertical: 13, borderBottomWidth: 1, borderColor: c.line }}>
+            <Row>
+              <View style={{ flex: 1 }}>
+                <T bold>{t.merchant || t.description || "Transaction"}</T>
+                <T muted size={11}>{t.category || "Uncategorised"} · {t.date}</T>
+              </View>
+              <View style={{ alignItems: "flex-end" }}>
+                <T bold style={{ color: t.direction.toLowerCase() === "credit" ? c.green : c.text }}>{t.direction.toLowerCase() === "credit" ? "+" : "−"}{new Intl.NumberFormat("en-IN", { style: "currency", currency: t.currency || summary.currency, maximumFractionDigits: 2 }).format(t.amount)}</T>
+                {t.needsReview ? <T size={10} muted>Needs review</T> : null}
+              </View>
+            </Row>
+          </View>
+        )) : <Empty title="No verified transactions yet" body="Your recent transactions will appear here once they are available." />) : recent.length ? (
           recent.map((t) => (
             <TransactionRow
               key={t.id}
