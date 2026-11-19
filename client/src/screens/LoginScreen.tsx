@@ -8,7 +8,7 @@ import {
   Note,
 } from "../components/ui";
 import { useAuth } from "../store/AuthProvider";
-import { register, signIn } from "../services/auth";
+import { getCurrentUser, register, signIn } from "../services/auth";
 
 export function LoginScreen({ onBack }: { onBack: () => void }) {
   const auth = useAuth();
@@ -45,7 +45,9 @@ export function LoginScreen({ onBack }: { onBack: () => void }) {
         await register(name, normalizedEmail, password);
       }
       const session = await signIn(normalizedEmail, password);
-      await auth.accept(session);
+      const profile = await getCurrentUser(session.accessToken);
+      if (!profile) throw new Error("Your account could not be verified. Please sign in again.");
+      await auth.accept({ ...session, user: profile });
     } catch (e) {
       setError(
         e instanceof Error
