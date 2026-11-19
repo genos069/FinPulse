@@ -55,8 +55,8 @@ export function HomeScreen() {
     return () => { active = false; };
   }, [auth.session?.accessToken, auth.demo, auth.local]);
   const serverCategories = summary?.categoryExpenses ?? [];
-  const displayIncome = summary?.currentMonthIncome ?? m.income;
-  const displayExpenses = summary?.currentMonthExpenses ?? m.expenses;
+  const displayIncome = summary?.currentMonthIncome;
+  const displayExpenses = summary?.currentMonthExpenses;
   const recent = [...state.transactions]
     .sort((a, b) => b.date.localeCompare(a.date))
     .slice(0, 5);
@@ -70,7 +70,9 @@ export function HomeScreen() {
   );
   const categories = summary
     ? serverCategories.slice().sort((a, b) => b.total - a.total).slice(0, 3).map((item) => [item.category, item.total] as [string, number])
-    : Object.entries(m.byCategory).sort((a, b) => b[1] - a[1]).slice(0, 3);
+    : auth.session
+      ? []
+      : Object.entries(m.byCategory).sort((a, b) => b[1] - a[1]).slice(0, 3);
   const first = (auth.session?.user.name ?? state.profile.name).split(" ")[0],
     hour = new Date().getHours();
   return (
@@ -104,7 +106,7 @@ export function HomeScreen() {
         </IconButton>
       }
     >
-      {dashboardError ? <Note>{dashboardError} Showing locally saved data for now.</Note> : null}
+      {dashboardError ? <Note>{dashboardError} Server-backed figures will appear when the connection is restored.</Note> : null}
       {dashboardLoading ? <T size={11} muted>Refreshing your account summary…</T> : null}
       {summary && (summary.pendingReviewCount > 0 || summary.excludedTransferCount > 0 || summary.otherCurrencyCount > 0) ? (
         <Note>{summary.pendingReviewCount} transactions need review · {summary.excludedTransferCount} transfers excluded · {summary.otherCurrencyCount} entries use another currency.</Note>
@@ -142,8 +144,8 @@ export function HomeScreen() {
         </T>
         <Row>
           {[
-            { label: "This month income", value: m.income },
-            { label: "This month spent", value: m.expenses },
+            { label: "This month income", value: displayIncome },
+            { label: "This month spent", value: displayExpenses },
           ].map((s) => (
             <View
               key={s.label}
@@ -158,7 +160,7 @@ export function HomeScreen() {
                 {s.label}
               </T>
               <T size={16} bold style={{ color: "white" }}>
-                {inr(s.value)}
+                {s.value === undefined ? "—" : inr(s.value)}
               </T>
             </View>
           ))}
@@ -244,7 +246,7 @@ export function HomeScreen() {
       />
       <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10 }}>
         {[
-          { label: "💰 Net cash flow", value: compact(summary?.currentMonthNetCashFlow ?? m.savings) },
+          { label: "💰 Net cash flow", value: summary ? compact(summary.currentMonthNetCashFlow) : auth.session ? "—" : compact(m.savings) },
           { label: "📈 Investments", value: compact(m.portfolio) },
           { label: "💳 Card outstanding", value: compact(m.cardDebt) },
           {
@@ -299,12 +301,12 @@ export function HomeScreen() {
                   {inr(amount)}
                 </T>
               </Row>
-              <Progress value={percent(amount, displayExpenses)} />
+              <Progress value={percent(amount, displayExpenses ?? 0)} />
             </View>
           ))
         ) : (
           <Empty
-            title="No expenses yet"
+            title={auth.session ? "No verified expenses yet" : "No expenses yet"}
             body="Your spending categories will appear here."
           />
         )}
@@ -351,7 +353,9 @@ export function HomeScreen() {
       </Card>
       <Section title="Recent transactions" />
       <Card>
-        {summary ? (summary.recentTransactions.length ? summary.recentTransactions.slice(0, 5).map((t) => (
+        {auth.session && !summary ? (
+          <Empty title="Dashboard transactions unavailable" body="Connect to the server to load your account transactions." />
+        ) : summary ? (summary.recentTransactions.length ? summary.recentTransactions.slice(0, 5).map((t) => (
           <View key={t.id} style={{ paddingVertical: 13, borderBottomWidth: 1, borderColor: c.line }}>
             <Row>
               <View style={{ flex: 1 }}>
