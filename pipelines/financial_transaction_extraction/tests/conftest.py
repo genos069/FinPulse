@@ -20,6 +20,26 @@ enable_gridfs_integration()
 from worker.config import WorkerConfig             # noqa: E402
 from worker_helpers import FakeClock               # noqa: E402
 
+class UnsafeTestDatabase(RuntimeError):
+    pass
+
+
+def assert_safe_test_uri(test_uri, production_uri=None, production_database="finpulse"):
+    """Real-database tests must never be pointed at the production cluster/database by accident.
+    They already use a random throw-away database name; this additionally refuses a TEST_MONGODB_URI that is
+    identical to MONGODB_URI, or whose database path is the production database."""
+    production_uri = production_uri if production_uri is not None else os.environ.get("MONGODB_URI", "")
+    if production_uri and test_uri.strip() == production_uri.strip():
+        raise UnsafeTestDatabase("TEST_MONGODB_URI is identical to MONGODB_URI: refusing to run tests on it. "
+                                 "Use a separate test cluster or a local MongoDB.")
+    path = test_uri.split("?", 1)[0].rsplit("/", 1)[-1]
+    if path.strip() == production_database:
+        raise UnsafeTestDatabase(f"TEST_MONGODB_URI names the production database '{production_database}'")
+
+
+if os.environ.get("TEST_MONGODB_URI"):
+    assert_safe_test_uri(os.environ["TEST_MONGODB_URI"])
+
 _DB_MODES = ["mock"] + (["real"] if os.environ.get("TEST_MONGODB_URI") else [])
 
 

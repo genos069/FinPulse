@@ -195,7 +195,8 @@ SMS_MERCHANT_RE = re.compile(
 # Reject "merchants" that are really your own bank/card/account, a date, or filler words.
 BAD_MERCHANT_RE = re.compile(
     rf"^(?:(?:your|a/?c|acct|account|the|xx|ref|upi|imps|neft|rtgs|vpa|rs|inr|date|mobile|linked)\b"
-    rf"|\d{{1,2}}[-/\s]?(?:{MONTHS})[a-z]*\b)|\b(?:bank|card)\b", re.I)
+    rf"|\d{{1,2}}[-/\s]?(?:{MONTHS})[a-z]*\b"
+    rf"|(?:{DATE_PATTERN}))|\b(?:bank|card)\b", re.I)          # a candidate that STARTS with any date format is a date
 ORDER_MERCHANT_RES = [
     re.compile(r"\bfor\s+(?:your\s+)?([A-Za-z][A-Za-z0-9&'. ]{1,30}?)\s+(?:order|ride|trip|booking|recharge|subscription|bill)\b", re.I),
     re.compile(r"\byour\s+([A-Za-z][A-Za-z0-9&']{1,20})\s+(?:order|ride|trip|booking)\b", re.I),
@@ -210,6 +211,9 @@ SENDER_ALIASES = {
     "APOLLO": "Apollo", "NETMDS": "Netmeds", "IRCTCI": "IRCTC", "MKMYTR": "MakeMyTrip",
 }
 ORDER_STOP = {"your", "next", "the", "this", "a", "an", "my", "new", "first", "latest", "last", "recent"}
+# Case-sensitive on purpose: only Capitalised / UPPER-CASE names count, so "for the month" is never a merchant.
+FOR_MERCHANT_RE = re.compile(
+    r"\bfor\s+([A-Z][A-Za-z0-9&'.]{2,24}(?:\s+[A-Z][A-Za-z0-9&'.]{1,20}){0,2})(?=\s+(?:on|dated|via|using|ref|upi)\b|[.,;]|$)")
 
 NARR_NOISE = {"upi", "neft", "imps", "rtgs", "pos", "ach", "nach", "ecs", "atm", "ib", "mb", "p2a",
               "p2m", "p2p", "payment", "txn", "ft", "mmt", "bil", "bilpay", "by", "to"}
@@ -528,7 +532,15 @@ def extract_merchant(rec: str, mode: str) -> str:
         if m and m.group(1).strip().lower() not in ORDER_STOP:
             return m.group(1).strip()
     sender = SENDER_TAG_RE.match(rec)                 # e.g. "[JM-PHRMEZ] ..." -> PharmEasy
-    return SENDER_ALIASES.get(sender.group(1).upper(), "") if sender else ""
+    alias = SENDER_ALIASES.get(sender.group(1).upper(), "") if sender else ""
+    if alias:
+        return alias
+    m = FOR_MERCHANT_RE.search(rec)                   # last resort: "debited by Rs 99 for NETFLIX on ..."
+    if m:
+        cand = m.group(1).strip(" .-")
+        if cand.lower() not in ORDER_STOP and not BAD_MERCHANT_RE.search(cand):
+            return cand
+    return ""
 
 
 def parse_receipt(text: str, source: str) -> Optional[Transaction]:

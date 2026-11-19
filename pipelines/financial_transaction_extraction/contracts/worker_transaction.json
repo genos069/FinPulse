@@ -1,0 +1,68 @@
+{
+  "transactions": [
+    {
+      "_id": {
+        "$oid": "507f1f77bcf86cd799439010"
+      },
+      "amount": {
+        "$numberDecimal": "450.00"
+      },
+      "balance": {
+        "$numberDecimal": "10000.50"
+      },
+      "category": "Food",
+      "categoryConfidence": 0.91,
+      "categorySource": "ml:cat-test",
+      "createdAt": {
+        "$date": "2026-01-01T12:00:00Z"
+      },
+      "currency": "INR",
+      "date": "2026-10-03",
+      "description": "UPI/DR/427619384729/SWIGGY",
+      "direction": "DEBIT",
+      "documentId": "507f1f77bcf86cd799439012",
+      "jobId": "507f1f77bcf86cd799439013",
+      "merchant": "Swiggy",
+      "needsReview": false,
+      "ocrConfidence": 88.5,
+      "pipelineCategory": "Food & Dining",
+      "referenceNumber": "427619384729",
+      "source": "statement.pdf",
+      "sourceHash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "updatedAt": {
+        "$date": "2026-01-01T12:00:00Z"
+      },
+      "userId": "contract-user"
+    },
+    {
+      "_id": {
+        "$oid": "507f1f77bcf86cd799439011"
+      },
+      "amount": {
+        "$numberDecimal": "75.00"
+      },
+      "balance": null,
+      "category": "Other",
+      "createdAt": {
+        "$date": "2026-01-01T12:00:00Z"
+      },
+      "currency": "INR",
+      "date": null,
+      "description": "UPI/DR/427619384729/SWIGGY",
+      "direction": "UNKNOWN",
+      "documentId": "507f1f77bcf86cd799439012",
+      "jobId": "507f1f77bcf86cd799439013",
+      "merchant": null,
+      "needsReview": true,
+      "pipelineCategory": "Uncategorized",
+      "possibleDuplicateOf": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "referenceNumber": null,
+      "source": "statement.pdf",
+      "sourceHash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "updatedAt": {
+        "$date": "2026-01-01T12:00:00Z"
+      },
+      "userId": "contract-user"
+    }
+  ]
+}
