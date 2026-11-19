@@ -85,15 +85,15 @@ export function MeScreen() {
             }}
           >
             <T size={24} bold style={{ color: c.green }}>
-              {state.profile.name[0]}
+              {(auth.session?.user.name ?? state.profile.name)[0]}
             </T>
           </View>
           <View style={{ flex: 1 }}>
             <T size={18} bold>
-              {state.profile.name}
+              {auth.session?.user.name ?? state.profile.name}
             </T>
             <T size={12} muted>
-              {state.demo ? "Demo profile" : "Personal finance profile"}
+              {auth.session?.user.email ?? (state.demo ? "Demo profile" : "Personal finance profile")}
             </T>
           </View>
           <T style={{ color: c.green }} bold>
