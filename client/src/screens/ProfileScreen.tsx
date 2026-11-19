@@ -21,15 +21,17 @@ import {
   riskAnswers,
 } from "../data/onboarding";
 import { useApp } from "../store/AppProvider";
+import { useAuth } from "../store/AuthProvider";
 import type { SetupDraft } from "../utils/onboarding";
 import { editProfile } from "../utils/profileEditing";
 export function ProfileScreen({
   navigation,
 }: NativeStackScreenProps<RootStackParams, "Profile">) {
   const { state, dispatch } = useApp(),
+    auth = useAuth(),
     p = state.profile;
   const [draft, setDraft] = useState<SetupDraft>({
-    name: p.name,
+    name: auth.session?.user.name ?? p.name,
     ageRange: p.ageRange ?? "",
     employment: p.employment ?? "",
     income: String(p.monthlyIncome),
@@ -80,6 +82,7 @@ export function ProfileScreen({
   ];
   return (
     <Screen title="Your profile" subtitle="Update any answer from your setup.">
+      {auth.session ? <Note>Your account name and email are provided by your signed-in account. Other setup preferences below remain saved in this app.</Note> : null}
       <Card>
         <Field
           label="Full name"
